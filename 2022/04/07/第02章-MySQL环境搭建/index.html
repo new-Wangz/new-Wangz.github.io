@@ -22,12 +22,12 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="笔记创建者：王圳 参考讲师：尚硅谷 宋红康（江湖人称：康师傅）  1. MySQL的卸载 步骤 1 ：停止MySQL服务在卸载之前，先停止MySQL8.0的服务。按键盘上的“Ctrl + Alt + Delete”组合键，打开“任务管理器”对话框，可以在“服务”列表找到“MySQL8.0”的服务，如果现在“正在运行”状态，可以右键单击服务，选择“停止”选项停止MySQL8.0的服务，如图所示。">
+  <meta name="description" content="1. MySQL的卸载">
 <meta property="og:type" content="article">
 <meta property="og:title" content="第02章_MySQL环境搭建">
 <meta property="og:url" content="http://example.com/2022/04/07/%E7%AC%AC02%E7%AB%A0-MySQL%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/index.html">
 <meta property="og:site_name" content="W Z B L O G">
-<meta property="og:description" content="笔记创建者：王圳 参考讲师：尚硅谷 宋红康（江湖人称：康师傅）  1. MySQL的卸载 步骤 1 ：停止MySQL服务在卸载之前，先停止MySQL8.0的服务。按键盘上的“Ctrl + Alt + Delete”组合键，打开“任务管理器”对话框，可以在“服务”列表找到“MySQL8.0”的服务，如果现在“正在运行”状态，可以右键单击服务，选择“停止”选项停止MySQL8.0的服务，如图所示。">
+<meta property="og:description" content="1. MySQL的卸载">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2022/04/07/%E7%AC%AC02%E7%AB%A0-MySQL%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1649303026758.png">
 <meta property="og:image" content="http://example.com/2022/04/07/%E7%AC%AC02%E7%AB%A0-MySQL%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1649303153973.png">
@@ -73,7 +73,7 @@
 <meta property="og:image" content="http://example.com/2022/04/07/%E7%AC%AC02%E7%AB%A0-MySQL%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1649311995332.png">
 <meta property="og:image" content="http://example.com/2022/04/07/%E7%AC%AC02%E7%AB%A0-MySQL%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1649312040335.png">
 <meta property="article:published_time" content="2022-04-07T03:42:44.000Z">
-<meta property="article:modified_time" content="2022-04-07T08:47:32.048Z">
+<meta property="article:modified_time" content="2022-04-09T07:05:18.684Z">
 <meta property="article:author" content="Wang Zhen">
 <meta property="article:tag" content="MySQL">
 <meta name="twitter:card" content="summary">
@@ -230,10 +230,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2022-04-07 11:42:44 / 修改时间：16:47:32" itemprop="dateCreated datePublished" datetime="2022-04-07T11:42:44+08:00">2022-04-07</time>
+              <time title="创建时间：2022-04-07 11:42:44" itemprop="dateCreated datePublished" datetime="2022-04-07T11:42:44+08:00">2022-04-07</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-09 15:05:18" itemprop="dateModified" datetime="2022-04-09T15:05:18+08:00">2022-04-09</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -276,11 +282,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>笔记创建者：王圳</p>
-<p>参考讲师：尚硅谷 宋红康（江湖人称：康师傅）</p>
-<hr>
-<h2 id="1-MySQL的卸载"><a href="#1-MySQL的卸载" class="headerlink" title="1. MySQL的卸载"></a>1. MySQL的卸载</h2><hr>
-<h3 id="步骤-1-：停止MySQL服务"><a href="#步骤-1-：停止MySQL服务" class="headerlink" title="步骤 1 ：停止MySQL服务"></a>步骤 1 ：停止MySQL服务</h3><p>在卸载之前，先停止MySQL8.0的服务。按键盘上的“Ctrl + Alt + Delete”组合键，打开“任务管理器”对话框，可以在“服务”列表找到“MySQL8.0”的服务，如果现在“正在运行”状态，可以右键单击服务，选择“停止”选项停止MySQL8.0的服务，如图所示。<span id="more"></span></p>
+        <hr>
+<h2 id="1-MySQL的卸载"><a href="#1-MySQL的卸载" class="headerlink" title="1. MySQL的卸载"></a>1. MySQL的卸载<span id="more"></span></h2><hr>
+<h3 id="步骤-1-：停止MySQL服务"><a href="#步骤-1-：停止MySQL服务" class="headerlink" title="步骤 1 ：停止MySQL服务"></a>步骤 1 ：停止MySQL服务</h3><p>在卸载之前，先停止MySQL8.0的服务。按键盘上的“Ctrl + Alt + Delete”组合键，打开“任务管理器”对话框，可以在“服务”列表找到“MySQL8.0”的服务，如果现在“正在运行”状态，可以右键单击服务，选择“停止”选项停止MySQL8.0的服务，如图所示。</p>
 <p><img src="/2022/04/07/%E7%AC%AC02%E7%AB%A0-MySQL%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/1649303026758.png" alt="1649303026758"></p>
 <h3 id="步骤-2-：软件的卸载"><a href="#步骤-2-：软件的卸载" class="headerlink" title="步骤 2 ：软件的卸载"></a>步骤 2 ：软件的卸载</h3><p><strong>方式 1 ：通过控制面板方式</strong></p>
 <p>卸载MySQL8.0的程序可以和其他桌面应用程序一样直接在“控制面板”选择“卸载程序”，并在程序列表中找到MySQL8.0服务器程序，直接双击卸载即可，如图所示。这种方式删除，数据目录下的数据不会跟着删除。</p>
@@ -619,7 +623,19 @@
 
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; use 0728db;</span><br><span class="line">Database changed</span><br><span class="line"></span><br><span class="line">mysql&gt; create table student (id int , name varchar( 20 )) charset Latin1;</span><br><span class="line">Query OK, 0 rows affected (0.02 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; show create table student\G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">Table: student</span><br><span class="line">Create Table: CREATE TABLE `student` (</span><br><span class="line">`id` int( 11 ) NOT NULL,</span><br><span class="line">`name` varchar( 20 ) DEFAULT NULL,</span><br><span class="line">PRIMARY KEY (`id`)</span><br><span class="line">) ENGINE=InnoDB DEFAULT CHARSET=latin1</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; alter table student charset utf8; #修改表字符编码为UTF8</span><br><span class="line">Query OK, 0 rows affected (0.01 sec)</span><br><span class="line">Records: 0 Duplicates: 0 Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; show create table student\G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">Table: student</span><br><span class="line">Create Table: CREATE TABLE `student` (</span><br><span class="line">`id` int( 11 ) NOT NULL,</span><br><span class="line">`name` varchar( 20 ) CHARACTER SET latin1 DEFAULT NULL,  #字段仍然是latin1编码</span><br><span class="line">PRIMARY KEY (`id`)</span><br><span class="line">) ENGINE=InnoDB DEFAULT CHARSET=utf8</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; alter table student modify name varchar( 20 ) charset utf8; #修改字段字符编码为UTF8</span><br><span class="line">Query OK, 0 rows affected (0.05 sec)</span><br><span class="line">Records: 0 Duplicates: 0 Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; show create table student\G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">Table: student</span><br><span class="line">Create Table: CREATE TABLE `student` (</span><br><span class="line">`id` int( 11 ) NOT NULL,</span><br><span class="line">`name` varchar( 20 ) DEFAULT NULL,</span><br><span class="line">PRIMARY KEY (`id`)</span><br><span class="line">) ENGINE=InnoDB DEFAULT CHARSET=utf8</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; show create database 0728 db;;</span><br><span class="line">+--------+-----------------------------------------------------------------+</span><br><span class="line">|Database| Create Database 	|</span><br><span class="line">+------+-------------------------------------------------------------------+</span><br><span class="line">| 0728 db| CREATE DATABASE `0728db` /*!40100 DEFAULT CHARACTER SET latin1 */|</span><br><span class="line">+------+-------------------------------------------------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; alter database 0728 db charset utf8; #修改数据库的字符编码为utf8</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; show create database 0728 db;</span><br><span class="line">+--------+-----------------------------------------------------------------+</span><br><span class="line">|Database| Create Database 	|</span><br><span class="line">+--------+-----------------------------------------------------------------+</span><br><span class="line">| 0728 db | CREATE DATABASE `0728db` /*!40100 DEFAULT CHARACTER SET utf8 */|</span><br><span class="line">+--------+-----------------------------------------------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
 
+<hr>
+<p>笔记创建者：王圳</p>
+<p>参考讲师：尚硅谷 宋红康（江湖人称：康师傅）</p>
 
+      <div>
+        
+          <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本 文 结 束 <i class="fa fa-paw"></i> 感 谢 您 的 阅 读-------------</div>
+    
+</div>
+        
+      </div>
     </div>
 
     
@@ -719,7 +735,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
