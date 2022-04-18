@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1. 约束(constraint)概述">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第13章_约束">
+<meta property="og:url" content="http://example.com/2022/04/18/%E7%AC%AC13%E7%AB%A0-%E7%BA%A6%E6%9D%9F/index.html">
+<meta property="og:site_name" content="W Z B L O G">
+<meta property="og:description" content="1. 约束(constraint)概述">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2022/04/18/%E7%AC%AC13%E7%AB%A0-%E7%BA%A6%E6%9D%9F/1650270930136.png">
+<meta property="og:image" content="http://example.com/2022/04/18/%E7%AC%AC13%E7%AB%A0-%E7%BA%A6%E6%9D%9F/1650271354207.png">
+<meta property="og:image" content="http://example.com/2022/04/18/%E7%AC%AC13%E7%AB%A0-%E7%BA%A6%E6%9D%9F/1650271961132.png">
+<meta property="og:image" content="http://example.com/2022/04/18/%E7%AC%AC13%E7%AB%A0-%E7%BA%A6%E6%9D%9F/1650272932586.png">
+<meta property="article:published_time" content="2022-04-18T08:19:27.000Z">
+<meta property="article:modified_time" content="2022-04-18T10:05:45.340Z">
+<meta property="article:author" content="Wang Zhen">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/04/18/%E7%AC%AC13%E7%AB%A0-%E7%BA%A6%E6%9D%9F/1650270930136.png">
+
+<link rel="canonical" href="http://example.com/2022/04/18/%E7%AC%AC13%E7%AB%A0-%E7%BA%A6%E6%9D%9F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>第13章_约束 | W Z B L O G</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">W Z B L O G</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">⚽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/18/%E7%AC%AC13%E7%AB%A0-%E7%BA%A6%E6%9D%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png#/images/avatar.gif">
+      <meta itemprop="name" content="Wang Zhen">
+      <meta itemprop="description" content="请出示行程码、健康码，配戴好口罩浏览本站😜">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="W Z B L O G">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          第13章_约束
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-04-18 16:19:27 / 修改时间：18:05:45" itemprop="dateCreated datePublished" datetime="2022-04-18T16:19:27+08:00">2022-04-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/" itemprop="url" rel="index"><span itemprop="name">技术博客</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2022/04/18/%E7%AC%AC13%E7%AB%A0-%E7%BA%A6%E6%9D%9F/" class="post-meta-item leancloud_visitors" data-flag-title="第13章_约束" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/04/18/%E7%AC%AC13%E7%AB%A0-%E7%BA%A6%E6%9D%9F/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/04/18/%E7%AC%AC13%E7%AB%A0-%E7%BA%A6%E6%9D%9F/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="1-约束-constraint-概述"><a href="#1-约束-constraint-概述" class="headerlink" title="1. 约束(constraint)概述"></a>1. 约束(constraint)概述<span id="more"></span></h2><hr>
+<h3 id="1-1-为什么需要约束"><a href="#1-1-为什么需要约束" class="headerlink" title="1. 1 为什么需要约束"></a>1. 1 为什么需要约束</h3><p>数据完整性（Data Integrity）是指数据的精确性（Accuracy）和可靠性（Reliability）。它是防止数据库中存在不符合语义规定的数据和防止因错误信息的输入输出造成无效操作或错误信息而提出的。</p>
+<p>为了保证数据的完整性，SQL规范以约束的方式对<strong>表数据进行额外的条件限制</strong>。从以下四个方面考虑：</p>
+<ul>
+<li><code>实体完整性（Entity Integrity）</code>：例如，同一个表中，不能存在两条完全相同无法区分的记录</li>
+<li><code>域完整性（Domain Integrity）</code>：例如：年龄范围0-120，性别范围“男&#x2F;女”</li>
+<li><code>引用完整性（Referential Integrity）</code>：例如：员工所在部门，在部门表中要能找到这个部门</li>
+<li><code>用户自定义完整性（User-defined Integrity）</code>：例如：用户名唯一、密码不能为空等，本部门经理的工资不得高于本部门职工的平均工资的 5 倍。</li>
+</ul>
+<h2 id="1-2-什么是约束"><a href="#1-2-什么是约束" class="headerlink" title="1. 2 什么是约束"></a>1. 2 什么是约束</h2><p>约束是表级的强制规定。</p>
+<p>可以在 <strong>创建表时规定约束（通过 CREATE TABLE 语句）</strong> ，或者在 <strong>表创建之后通过 ALTER TABLE 语句规定约束</strong> 。</p>
+<h3 id="1-3-约束的分类"><a href="#1-3-约束的分类" class="headerlink" title="1. 3 约束的分类"></a>1. 3 约束的分类</h3><ul>
+<li><p>根据约束数据列的限制， 约束可分为：</p>
+<ul>
+<li>单列约束 ：每个约束只约束一列</li>
+<li>多列约束 ：每个约束可约束多列数据</li>
+</ul>
+</li>
+<li><p>根据约束的作用范围 ，约束可分为：</p>
+<ul>
+<li>列级约束 ：只能作用在一个列上，跟在列的定义后面</li>
+<li>表级约束 ：可以作用在多个列上，不与列一起，而是单独定义</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">			位置			支持的约束类型					是否可以起约束名</span><br><span class="line">列级约束：	列的后面		语法都支持，但外键没有效果		不可以</span><br><span class="line">表级约束：	所有列的下面	默认和非空不支持，其他支持		可以（主键没有效果）</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>根据约束起的作用 ，约束可分为：</p>
+<ul>
+<li>NOT NULL 非空约束，规定某个字段不能为空</li>
+<li>UNIQUE 唯一约束 ， 规定某个字段在整个表中是唯一的</li>
+<li>PRIMARY KEY 主键(非空且唯一)约束</li>
+<li>FOREIGN KEY 外键约束</li>
+<li>CHECK 检查约束</li>
+<li>DEFAULT 默认值约束</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>注意： MySQL不支持check约束，但可以使用check约束，而没有任何效果</p>
+</blockquote>
+<ul>
+<li><p>查看某个表已有的约束</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#information_schema数据库名（系统库）</span><br><span class="line">#table_constraints表名称（专门存储各个表的约束）</span><br><span class="line">SELECT * FROM information_schema.table_constraints</span><br><span class="line">WHERE table_name = &#x27;表名称&#x27;;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h2 id="2-非空约束"><a href="#2-非空约束" class="headerlink" title="2. 非空约束"></a>2. 非空约束</h2><hr>
+<h3 id="2-1-作用"><a href="#2-1-作用" class="headerlink" title="2. 1 作用"></a>2. 1 作用</h3><p>限定某个字段&#x2F;某列的值不允许为空</p>
+<p><img src="/2022/04/18/%E7%AC%AC13%E7%AB%A0-%E7%BA%A6%E6%9D%9F/1650270930136.png" alt="1650270930136"></p>
+<h3 id="2-2-关键字"><a href="#2-2-关键字" class="headerlink" title="2. 2 关键字"></a>2. 2 关键字</h3><p>NOT NULL</p>
+<h3 id="2-3-特点"><a href="#2-3-特点" class="headerlink" title="2. 3 特点"></a>2. 3 特点</h3><ul>
+<li>默认，所有的类型的值都可以是NULL，包括INT、FLOAT等数据类型</li>
+<li>非空约束只能出现在表对象的列上，只能某个列单独限定非空，不能组合非空</li>
+<li>一个表可以有很多列都分别限定了非空</li>
+<li>空字符串’’不等于NULL， 0 也不等于NULL</li>
+</ul>
+<h3 id="2-4-添加非空约束"><a href="#2-4-添加非空约束" class="headerlink" title="2. 4 添加非空约束"></a>2. 4 添加非空约束</h3><p>(1) 建表时</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE 表名称(</span><br><span class="line">	字段名 数据类型,</span><br><span class="line">	字段名 数据类型 NOT NULL,</span><br><span class="line">	字段名 数据类型 NOT NULL</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE emp(</span><br><span class="line">id INT( 10 ) NOT NULL,</span><br><span class="line">NAME VARCHAR( 20 ) NOT NULL,</span><br><span class="line">sex CHAR NULL</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE student(</span><br><span class="line">	sid int,</span><br><span class="line">	sname varchar( 20 ) not null,</span><br><span class="line">	tel char( 11 ) ,</span><br><span class="line">	cardid char( 18 ) not null</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">insert into student values( 1 ,&#x27;张三&#x27;,&#x27;13710011002&#x27;,&#x27;110222198912032545&#x27;); #成功</span><br><span class="line"></span><br><span class="line">insert into student values( 2 ,&#x27;李四&#x27;,&#x27;13710011002&#x27;,null);#身份证号为空</span><br><span class="line">ERROR 1048 ( 23000 ): Column &#x27;cardid&#x27; cannot be null</span><br><span class="line"></span><br><span class="line">insert into student values(2,&#x27;李四&#x27;,null,&#x27;110222198912032546&#x27;);#成功，tel允许为空</span><br><span class="line"></span><br><span class="line">insert into student values( 3 ,null,null,&#x27;110222198912032547&#x27;);#失败</span><br><span class="line">ERROR 1048 ( 23000 ): Column &#x27;sname&#x27; cannot be null</span><br></pre></td></tr></table></figure>
+
+<p>(2) 建表后</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table 表名称 modify 字段名 数据类型 not null;</span><br></pre></td></tr></table></figure>
+
+<p>举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE emp</span><br><span class="line">MODIFY sex VARCHAR( 30 ) NOT NULL;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table student modify sname varchar( 20 ) not null;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-5-删除非空约束"><a href="#2-5-删除非空约束" class="headerlink" title="2. 5 删除非空约束"></a>2. 5 删除非空约束</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">alter table 表名称 modify 字段名 数据类型 NULL;#去掉not null，相当于修改某个非注解字段，该字段允许为空</span><br><span class="line"></span><br><span class="line">或</span><br><span class="line"></span><br><span class="line">alter table 表名称 modify 字段名 数据类型;#去掉not null，相当于修改某个非注解字段，该字段允许为空</span><br></pre></td></tr></table></figure>
+
+<p>举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE emp</span><br><span class="line">MODIFY sex VARCHAR( 30 ) NULL;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE emp</span><br><span class="line">MODIFY NAME VARCHAR( 15 ) DEFAULT &#x27;abc&#x27; NULL;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-唯一性约束"><a href="#3-唯一性约束" class="headerlink" title="3. 唯一性约束"></a>3. 唯一性约束</h2><hr>
+<h3 id="3-1-作用"><a href="#3-1-作用" class="headerlink" title="3. 1 作用"></a>3. 1 作用</h3><p>用来限制某个字段&#x2F;某列的值不能重复。</p>
+<p><img src="/2022/04/18/%E7%AC%AC13%E7%AB%A0-%E7%BA%A6%E6%9D%9F/1650271354207.png" alt="1650271354207"></p>
+<h3 id="3-2-关键字"><a href="#3-2-关键字" class="headerlink" title="3. 2 关键字"></a>3. 2 关键字</h3><p>UNIQUE</p>
+<h3 id="3-3-特点"><a href="#3-3-特点" class="headerlink" title="3. 3 特点"></a>3. 3 特点</h3><ul>
+<li>同一个表可以有多个唯一约束。</li>
+<li>唯一约束可以是某一个列的值唯一，也可以多个列组合的值唯一。</li>
+<li>唯一性约束允许列值为空。</li>
+<li>在创建唯一约束的时候，如果不给唯一约束命名，就默认和列名相同。</li>
+<li><strong>MySQL会给唯一约束的列上默认创建一个唯一索引。</strong></li>
+</ul>
+<h3 id="3-4-添加唯一约束"><a href="#3-4-添加唯一约束" class="headerlink" title="3. 4 添加唯一约束"></a>3. 4 添加唯一约束</h3><p>(1) 建表时</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">create table 表名称(</span><br><span class="line">	字段名 数据类型,</span><br><span class="line">	字段名 数据类型 unique,</span><br><span class="line">	字段名 数据类型 unique key,</span><br><span class="line">	字段名 数据类型</span><br><span class="line">);</span><br><span class="line">create table 表名称(</span><br><span class="line">	字段名 数据类型,</span><br><span class="line">	字段名 数据类型,</span><br><span class="line">	字段名 数据类型,</span><br><span class="line">	[constraint 约束名] unique key(字段名)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">create table student(</span><br><span class="line">	sid int,</span><br><span class="line">	sname varchar( 20 ),</span><br><span class="line">	tel char( 11 ) unique,</span><br><span class="line">	cardid char( 18 ) unique key</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE t_course(</span><br><span class="line">	cid INT UNIQUE,</span><br><span class="line">	cname VARCHAR( 100 ) UNIQUE,</span><br><span class="line">	description VARCHAR( 200 )</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE USER(</span><br><span class="line">	id INT NOT NULL,</span><br><span class="line">	NAME VARCHAR( 25 ),</span><br><span class="line">	PASSWORD VARCHAR( 16 ),</span><br><span class="line">	-- 使用表级约束语法</span><br><span class="line">	CONSTRAINT uk_name_pwd UNIQUE(NAME,PASSWORD)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>表示用户名和密码组合不能重复</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">insert into student values( 1 ,&#x27;张三&#x27;,&#x27;13710011002&#x27;,&#x27;101223199012015623&#x27;);</span><br><span class="line">insert into student values( 2 ,&#x27;李四&#x27;,&#x27;13710011003&#x27;,&#x27;101223199012015624&#x27;);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from student;</span><br><span class="line">+-----+-------+-------------+--------------------+</span><br><span class="line">| sid | sname | tel | cardid |</span><br><span class="line">+-----+-------+-------------+--------------------+</span><br><span class="line">| 1 | 张三 | 13710011002 | 101223199012015623 |</span><br><span class="line">| 2 | 李四 | 13710011003 | 101223199012015624 |</span><br><span class="line">+-----+-------+-------------+--------------------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">insert into student values( 3 ,&#x27;王五&#x27;,&#x27;13710011004&#x27;,&#x27;101223199012015624&#x27;); #身份证号重复</span><br><span class="line">ERROR 1062 ( 23000 ): Duplicate entry &#x27;101223199012015624&#x27; for key &#x27;cardid&#x27;</span><br><span class="line"></span><br><span class="line">insert into student values( 3 ,&#x27;王五&#x27;,&#x27;13710011003&#x27;,&#x27;101223199012015625&#x27;);</span><br><span class="line">ERROR 1062 ( 23000 ): Duplicate entry &#x27;13710011003&#x27; for key &#x27;tel&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>(2) 建表后指定唯一键约束</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#字段列表中如果是一个字段，表示该列的值唯一。如果是两个或更多个字段，那么复合唯一，即多个字段的组合是唯一的</span><br><span class="line"></span><br><span class="line">#方式 1 ：</span><br><span class="line">alter table 表名称 add unique key(字段列表);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#方式 2 ：</span><br><span class="line">alter table 表名称 modify 字段名 字段类型 unique;</span><br></pre></td></tr></table></figure>
+
+<p>举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE USER</span><br><span class="line">ADD UNIQUE(NAME,PASSWORD);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE USER</span><br><span class="line">ADD CONSTRAINT uk_name_pwd UNIQUE(NAME,PASSWORD);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE USER</span><br><span class="line">MODIFY NAME VARCHAR( 20 ) UNIQUE;</span><br></pre></td></tr></table></figure>
+
+<p>举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">create table student(</span><br><span class="line">	sid int primary key,</span><br><span class="line">	sname varchar( 20 ),</span><br><span class="line">	tel char( 11 ) ,</span><br><span class="line">	cardid char( 18 )</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alter table student add unique key(tel);</span><br><span class="line">alter table student add unique key(cardid);</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-5-关于复合唯一约束"><a href="#3-5-关于复合唯一约束" class="headerlink" title="3. 5 关于复合唯一约束"></a>3. 5 关于复合唯一约束</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">create table 表名称(</span><br><span class="line">	字段名 数据类型,</span><br><span class="line">	字段名 数据类型,</span><br><span class="line">	字段名 数据类型,</span><br><span class="line">	unique key(字段列表) #字段列表中写的是多个字段名，多个字段名用逗号分隔，表示那么			是复合唯一，即多个字段的组合是唯一的</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">#学生表</span><br><span class="line">create table student(</span><br><span class="line">	sid int, #学号</span><br><span class="line">	sname varchar( 20 ), #姓名</span><br><span class="line">	tel char( 11 ) unique key,  #电话</span><br><span class="line">	cardid char( 18 ) unique key #身份证号</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">#课程表</span><br><span class="line">create table course(</span><br><span class="line">	cid int,  #课程编号</span><br><span class="line">	cname varchar( 20 ) #课程名称</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">#选课表</span><br><span class="line">create table student_course(</span><br><span class="line">	id int,</span><br><span class="line">	sid int,</span><br><span class="line">	cid int,</span><br><span class="line">	score int,</span><br><span class="line">	unique key(sid,cid)  #复合唯一</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">insert into student values( 1 ,&#x27;张三&#x27;,&#x27;13710011002&#x27;,&#x27;101223199012015623&#x27;);#成功</span><br><span class="line">insert into student values( 2 ,&#x27;李四&#x27;,&#x27;13710011003&#x27;,&#x27;101223199012015624&#x27;);#成功</span><br><span class="line">insert into course values( 1001 ,&#x27;Java&#x27;),( 1002 ,&#x27;MySQL&#x27;);#成功</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from student;</span><br><span class="line">+-----+-------+-------------+--------------------+</span><br><span class="line">| sid | sname | tel | cardid |</span><br><span class="line">+-----+-------+-------------+--------------------+</span><br><span class="line">| 1 | 张三 | 13710011002 | 101223199012015623 |</span><br><span class="line">| 2 | 李四 | 13710011003 | 101223199012015624 |</span><br><span class="line">+-----+-------+-------------+--------------------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from course;</span><br><span class="line">+------+-------+</span><br><span class="line">| cid | cname |</span><br><span class="line">+------+-------+</span><br><span class="line">| 1001 | Java |</span><br><span class="line">| 1002 | MySQL |</span><br><span class="line">+------+-------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">insert into student_course values</span><br><span class="line">( 1 , 1 , 1001 , 89 ),</span><br><span class="line">( 2 , 1 , 1002 , 90 ),</span><br><span class="line">( 3 , 2 , 1001 , 88 ),</span><br><span class="line">( 4 , 2 , 1002 , 56 );#成功</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from student_course;</span><br><span class="line">+----+------+------+-------+</span><br><span class="line">| id | sid | cid | score |</span><br><span class="line">+----+------+------+-------+</span><br><span class="line">| 1 | 1 | 1001 | 89 |</span><br><span class="line">| 2 | 1 | 1002 | 90 |</span><br><span class="line">| 3 | 2 | 1001 | 88 |</span><br><span class="line">| 4 | 2 | 1002 | 56 |</span><br><span class="line">+----+------+------+-------+</span><br><span class="line">4 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">insert into student_course values ( 5 , 1 , 1001 , 88 );#失败</span><br><span class="line"></span><br><span class="line">#ERROR 1062 (23000): Duplicate entry &#x27;1-1001&#x27; for key &#x27;sid&#x27; 违反sid-cid的复合唯一</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-6-删除唯一约束"><a href="#3-6-删除唯一约束" class="headerlink" title="3. 6 删除唯一约束"></a>3. 6 删除唯一约束</h3><ul>
+<li>添加唯一性约束的列上也会自动创建唯一索引。</li>
+<li>删除唯一约束只能通过删除唯一索引的方式删除。</li>
+<li>删除时需要指定唯一索引名，唯一索引名就和唯一约束名一样。</li>
+<li>如果创建唯一约束时未指定名称，如果是单列，就默认和列名相同；如果是组合列，那么默认和()中排在第一个的列名相同。也可以自定义唯一性约束名。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM information_schema.table_constraints WHERE table_name = &#x27;表名&#x27;; #查看都有哪些约束</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE USER</span><br><span class="line">DROP INDEX uk_name_pwd;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：可以通过 <code>show index from 表名称;</code>查看表的索引</p>
+</blockquote>
+<hr>
+<h2 id="4-PRIMARY-KEY-约束"><a href="#4-PRIMARY-KEY-约束" class="headerlink" title="4. PRIMARY KEY 约束"></a>4. PRIMARY KEY 约束</h2><hr>
+<h3 id="4-1-作用"><a href="#4-1-作用" class="headerlink" title="4. 1 作用"></a>4. 1 作用</h3><p>用来唯一标识表中的一行记录。</p>
+<h3 id="4-2-关键字"><a href="#4-2-关键字" class="headerlink" title="4. 2 关键字"></a>4. 2 关键字</h3><p>primary key</p>
+<h3 id="4-3-特点"><a href="#4-3-特点" class="headerlink" title="4. 3 特点"></a>4. 3 特点</h3><ul>
+<li>主键约束相当于 唯一约束+非空约束的组合 ，主键约束列不允许重复，也不允许出现空值。<br><img src="/2022/04/18/%E7%AC%AC13%E7%AB%A0-%E7%BA%A6%E6%9D%9F/1650271961132.png" alt="1650271961132"></li>
+<li>一个表最多只能有一个主键约束，建立主键约束可以在列级别创建，也可以在表级别上创建。</li>
+<li>主键约束对应着表中的一列或者多列（复合主键）</li>
+<li>如果是多列组合的复合主键约束，那么这些列都不允许为空值，并且组合的值不允许重复。</li>
+<li><strong>MySQL的主键名总是PRIMARY</strong> ，就算自己命名了主键约束名也没用。</li>
+<li>当创建主键约束时，系统默认会在所在的列或列组合上建立对应的 <strong>主键索引</strong> （能够根据主键查询的，就根据主键查询，效率更高）。如果删除主键约束了，主键约束对应的索引就自动删除了。</li>
+<li>需要注意的一点是，不要修改主键字段的值。因为主键是数据记录的唯一标识，如果修改了主键的值，就有可能会破坏数据的完整性。</li>
+</ul>
+<h3 id="4-4-添加主键约束"><a href="#4-4-添加主键约束" class="headerlink" title="4. 4 添加主键约束"></a>4. 4 添加主键约束</h3><p>(1) 建表时指定主键约束</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">create table 表名称(</span><br><span class="line">	字段名 数据类型 primary key, #列级模式</span><br><span class="line">	字段名 数据类型,</span><br><span class="line">	字段名 数据类型</span><br><span class="line">);</span><br><span class="line">create table 表名称(</span><br><span class="line">	字段名 数据类型,</span><br><span class="line">	字段名 数据类型,</span><br><span class="line">	字段名 数据类型,</span><br><span class="line">	[constraint 约束名] primary key(字段名) #表级模式</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">create table temp(</span><br><span class="line">	id int primary key,</span><br><span class="line">	name varchar( 20 )</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; desc temp;</span><br><span class="line">+-------+-------------+------+-----+---------+-------+</span><br><span class="line">| Field | Type | Null | Key | Default | Extra |</span><br><span class="line">+-------+-------------+------+-----+---------+-------+</span><br><span class="line">| id | int( 11 ) | NO | PRI | NULL | |</span><br><span class="line">| name | varchar( 20 ) | YES | | NULL | |</span><br><span class="line">+-------+-------------+------+-----+---------+-------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">insert into temp values( 1 ,&#x27;张三&#x27;);#成功</span><br><span class="line">insert into temp values( 2 ,&#x27;李四&#x27;);#成功</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from temp;</span><br><span class="line">+----+------+</span><br><span class="line">| id | name |</span><br><span class="line">+----+------+</span><br><span class="line">| 1 | 张三 |</span><br><span class="line">| 2 | 李四 |</span><br><span class="line">+----+------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">insert into temp values( 1 ,&#x27;张三&#x27;);#失败</span><br><span class="line">ERROR 1062 ( 23000 ): Duplicate（重复） entry（键入，输入） &#x27;1&#x27; for key &#x27;PRIMARY&#x27;</span><br><span class="line"></span><br><span class="line">insert into temp values( 1 ,&#x27;王五&#x27;);#失败</span><br><span class="line">ERROR 1062 ( 23000 ): Duplicate entry &#x27;1&#x27; for key &#x27;PRIMARY&#x27;</span><br><span class="line"></span><br><span class="line">insert into temp values( 3 ,&#x27;张三&#x27;);#成功</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from temp;</span><br><span class="line">+----+------+</span><br><span class="line">| id | name |</span><br><span class="line">+----+------+</span><br><span class="line">| 1 | 张三 |</span><br><span class="line">| 2 | 李四 |</span><br><span class="line">| 3 | 张三 |</span><br><span class="line">+----+------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">insert into temp values( 4 ,null);#成功</span><br><span class="line"></span><br><span class="line">insert into temp values(null,&#x27;李琦&#x27;);#失败</span><br><span class="line">ERROR 1048 ( 23000 ): Column &#x27;id&#x27; cannot be null</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from temp;</span><br><span class="line">+----+------+</span><br><span class="line">| id | name |</span><br><span class="line">+----+------+</span><br><span class="line">| 1 | 张三 |</span><br><span class="line">| 2 | 李四 |</span><br><span class="line">| 3 | 张三 |</span><br><span class="line">| 4 | NULL |</span><br><span class="line">+----+------+</span><br><span class="line">4 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#演示一个表建立两个主键约束</span><br><span class="line">create table temp(</span><br><span class="line">	id int primary key,</span><br><span class="line">	name varchar( 20 ) primary key</span><br><span class="line">);</span><br><span class="line">ERROR 1068 ( 42000 ): Multiple（多重的） primary key defined（定义）</span><br></pre></td></tr></table></figure>
+
+<p>再举例：</p>
+<ul>
+<li><p>列级约束</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE emp4(</span><br><span class="line">	id INT PRIMARY KEY AUTO_INCREMENT ,</span><br><span class="line">	NAME VARCHAR( 20 )</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>表级约束</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE emp5(</span><br><span class="line">	id INT NOT NULL AUTO_INCREMENT,</span><br><span class="line">	NAME VARCHAR( 20 ),</span><br><span class="line">	pwd VARCHAR( 15 ),</span><br><span class="line">	CONSTRAINT emp5_id_pk PRIMARY KEY(id)</span><br><span class="line">);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>(2) 建表后增加主键约束</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE 表名称 ADD PRIMARY KEY(字段列表); #字段列表可以是一个字段，也可以是多个字段，如果是多个字段的话，是复合主键</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE student ADD PRIMARY KEY (sid);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE emp5 ADD PRIMARY KEY(NAME,pwd);</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="4-5-关于复合主键"><a href="#4-5-关于复合主键" class="headerlink" title="4. 5 关于复合主键"></a>4. 5 关于复合主键</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">create table 表名称(</span><br><span class="line">	字段名 数据类型,</span><br><span class="line">	字段名 数据类型,</span><br><span class="line">	字段名 数据类型,</span><br><span class="line">	primary key(字段名1,字段名2)  #表示字段 1 和字段 2 的组合是唯一的，也可以有更多		个字段</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#学生表</span><br><span class="line">create table student(</span><br><span class="line">	sid int primary key,  #学号</span><br><span class="line">	sname varchar( 20 ) #学生姓名</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">#课程表</span><br><span class="line">create table course(</span><br><span class="line">	cid int primary key,  #课程编号</span><br><span class="line">	cname varchar( 20 ) #课程名称</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">#选课表</span><br><span class="line">create table student_course(</span><br><span class="line">	sid int,</span><br><span class="line">	cid int,</span><br><span class="line">	score int,</span><br><span class="line">	primary key(sid,cid)  #复合主键</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">insert into student values( 1 ,&#x27;张三&#x27;),( 2 ,&#x27;李四&#x27;);</span><br><span class="line">insert into course values( 1001 ,&#x27;Java&#x27;),( 1002 ,&#x27;MySQL&#x27;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from student;</span><br><span class="line">+-----+-------+</span><br><span class="line">| sid | sname |</span><br><span class="line">+-----+-------+</span><br><span class="line">| 1 | 张三 |</span><br><span class="line">| 2 | 李四 |</span><br><span class="line">+-----+-------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from course;</span><br><span class="line">+------+-------+</span><br><span class="line">| cid | cname |</span><br><span class="line">+------+-------+</span><br><span class="line">| 1001 | Java |</span><br><span class="line">| 1002 | MySQL |</span><br><span class="line">+------+-------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into student_course values(1,1001,89),(1,1002,90),(2,1001,88),(2,1002,56);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from student_course;</span><br><span class="line">+-----+------+-------+</span><br><span class="line">| sid | cid | score |</span><br><span class="line">+-----+------+-------+</span><br><span class="line">| 1 | 1001 | 89 |</span><br><span class="line">| 1 | 1002 | 90 |</span><br><span class="line">| 2 | 1001 | 88 |</span><br><span class="line">| 2 | 1002 | 56 |</span><br><span class="line">+-----+------+-------+</span><br><span class="line">4 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">insert into student_course values( 1 , 1001 , 100 );</span><br><span class="line">ERROR 1062 ( 23000 ): Duplicate entry &#x27;1-1001&#x27; for key &#x27;PRIMARY&#x27;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; desc student_course;</span><br><span class="line">+-------+---------+------+-----+---------+-------+</span><br><span class="line">| Field | Type | Null | Key | Default | Extra |</span><br><span class="line">+-------+---------+------+-----+---------+-------+</span><br><span class="line">| sid | int( 11 ) | NO | PRI | NULL | |</span><br><span class="line">| cid | int( 11 ) | NO | PRI | NULL | |</span><br><span class="line">| score | int( 11 ) | YES | | NULL | |</span><br><span class="line">+-------+---------+------+-----+---------+-------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>再举例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE emp6(</span><br><span class="line">	id INT NOT NULL,</span><br><span class="line">	NAME VARCHAR( 20 ),</span><br><span class="line">	pwd VARCHAR( 15 ),</span><br><span class="line">	CONSTRAINT emp7_pk PRIMARY KEY(NAME,pwd)</span><br><span class="line">);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="4-6-删除主键约束"><a href="#4-6-删除主键约束" class="headerlink" title="4. 6 删除主键约束"></a>4. 6 删除主键约束</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table 表名称 drop primary key;</span><br></pre></td></tr></table></figure>
+
+<p>举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE student DROP PRIMARY KEY;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE emp5 DROP PRIMARY KEY;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>说明：删除主键约束，不需要指定主键名，因为一个表只有一个主键，删除主键约束后，非空还存在。</p>
+</blockquote>
+<hr>
+<h2 id="5-自增列：AUTO-INCREMENT"><a href="#5-自增列：AUTO-INCREMENT" class="headerlink" title="5. 自增列：AUTO_INCREMENT"></a>5. 自增列：AUTO_INCREMENT</h2><hr>
+<h3 id="5-1-作用"><a href="#5-1-作用" class="headerlink" title="5. 1 作用"></a>5. 1 作用</h3><p>某个字段的值自增</p>
+<h3 id="5-2-关键字"><a href="#5-2-关键字" class="headerlink" title="5. 2 关键字"></a>5. 2 关键字</h3><p>auto_increment</p>
+<h3 id="5-3-特点和要求"><a href="#5-3-特点和要求" class="headerlink" title="5. 3 特点和要求"></a>5. 3 特点和要求</h3><ol>
+<li>一个表最多只能有一个自增长列</li>
+<li>当需要产生唯一标识符或顺序值时，可设置自增长</li>
+<li>自增长列约束的列必须是键列（主键列，唯一键列）</li>
+<li>自增约束的列的数据类型必须是整数类型</li>
+<li>如果自增列指定了 0 和 null，会在当前最大值的基础上自增；如果自增列手动指定了具体值，直接赋值为具体值。</li>
+</ol>
+<p>错误演示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">create table employee(</span><br><span class="line">	eid int auto_increment,</span><br><span class="line">	ename varchar( 20 )</span><br><span class="line">);</span><br><span class="line"># ERROR 1075 (42000): Incorrect table definition; there can be only one auto column and it must be defined as a key</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">create table employee(</span><br><span class="line">	eid int primary key,</span><br><span class="line">	ename varchar( 20 ) unique key auto_increment</span><br><span class="line">);</span><br><span class="line"># ERROR 1063 (42000): Incorrect column specifier for column &#x27;ename&#x27; 因为ename不是整数类型</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-4-如何指定自增约束"><a href="#5-4-如何指定自增约束" class="headerlink" title="5. 4 如何指定自增约束"></a>5. 4 如何指定自增约束</h3><p><strong>(1) 建表时</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">create table 表名称(</span><br><span class="line">    字段名 数据类型 primary key auto_increment,</span><br><span class="line">    字段名 数据类型 unique key not null,</span><br><span class="line">    字段名 数据类型 unique key,</span><br><span class="line">    字段名 数据类型 not null default 默认值,</span><br><span class="line">);</span><br><span class="line">create table 表名称(</span><br><span class="line">    字段名 数据类型 default 默认值 ,</span><br><span class="line">    字段名 数据类型 unique key auto_increment,</span><br><span class="line">    字段名 数据类型 not null default 默认值,,</span><br><span class="line">    primary key(字段名)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">create table employee(</span><br><span class="line">    eid int primary key auto_increment,</span><br><span class="line">    ename varchar( 20 )</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; desc employee;</span><br><span class="line">+-------+-------------+------+-----+---------+----------------+</span><br><span class="line">| Field | Type | Null | Key | Default | Extra |</span><br><span class="line">+-------+-------------+------+-----+---------+----------------+</span><br><span class="line">| eid | int( 11 ) | NO | PRI | NULL | auto_increment |</span><br><span class="line">| ename | varchar( 20 ) | YES | | NULL | |</span><br><span class="line">+-------+-------------+------+-----+---------+----------------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p><strong>(2) 建表后</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table 表名称 modify 字段名 数据类型 auto_increment;</span><br></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">create table employee(</span><br><span class="line">    eid int primary key ,</span><br><span class="line">    ename varchar( 20 )</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table employee modify eid int auto_increment;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; desc employee;</span><br><span class="line">+-------+-------------+------+-----+---------+----------------+</span><br><span class="line">| Field | Type | Null | Key | Default | Extra |</span><br><span class="line">+-------+-------------+------+-----+---------+----------------+</span><br><span class="line">| eid | int( 11 ) | NO | PRI | NULL | auto_increment |</span><br><span class="line">| ename | varchar( 20 ) | YES | | NULL | |</span><br><span class="line">+-------+-------------+------+-----+---------+----------------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-5-如何删除自增约束"><a href="#5-5-如何删除自增约束" class="headerlink" title="5. 5 如何删除自增约束"></a>5. 5 如何删除自增约束</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#alter table 表名称 modify 字段名 数据类型 auto_increment;#给这个字段增加自增约束</span><br><span class="line"></span><br><span class="line">alter table 表名称 modify 字段名 数据类型; #去掉auto_increment相当于删除</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table employee modify eid int;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; desc employee;</span><br><span class="line">+-------+-------------+------+-----+---------+-------+</span><br><span class="line">| Field | Type | Null | Key | Default | Extra |</span><br><span class="line">+-------+-------------+------+-----+---------+-------+</span><br><span class="line">| eid | int( 11 ) | NO | PRI | NULL | |</span><br><span class="line">| ename | varchar( 20 ) | YES | | NULL | |</span><br><span class="line">+-------+-------------+------+-----+---------+-------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-6-MySQL-8-0-新特性—自增变量的持久化"><a href="#5-6-MySQL-8-0-新特性—自增变量的持久化" class="headerlink" title="5. 6 MySQL 8. 0 新特性—自增变量的持久化"></a>5. 6 MySQL 8. 0 新特性—自增变量的持久化</h3><p>在MySQL 8.0之前，自增主键AUTO_INCREMENT的值如果大于max(primary key)+1，在MySQL重启后，会重置AUTO_INCREMENT&#x3D;max(primary key)+1，这种现象在某些情况下会导致业务主键冲突或者其他难以发现的问题。 下面通过案例来对比不同的版本中自增变量是否持久化。 在MySQL 5.7版本中，测试步骤如下： 创建的数据表中包含自增主键的id字段，语句如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE test1(</span><br><span class="line">	id INT PRIMARY KEY AUTO_INCREMENT</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>插入 4 个空值，执行如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO test</span><br><span class="line">VALUES( 0 ),( 0 ),( 0 ),( 0 );</span><br></pre></td></tr></table></figure>
+
+<p>查询数据表test1中的数据，结果如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SELECT * FROM test1;</span><br><span class="line">+----+</span><br><span class="line">| id |</span><br><span class="line">+----+</span><br><span class="line">| 1 |</span><br><span class="line">| 2 |</span><br><span class="line">| 3 |</span><br><span class="line">| 4 |</span><br><span class="line">+----+</span><br><span class="line">4 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>删除id为 4 的记录，语句如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DELETE FROM test1 WHERE id = 4 ;</span><br></pre></td></tr></table></figure>
+
+<p>再次插入一个空值，语句如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO test1 VALUES( 0 );</span><br></pre></td></tr></table></figure>
+
+<p>查询此时数据表test1中的数据，结果如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SELECT * FROM test1;</span><br><span class="line">+----+</span><br><span class="line">| id |</span><br><span class="line">+----+</span><br><span class="line">| 1 |</span><br><span class="line">| 2 |</span><br><span class="line">| 3 |</span><br><span class="line">| 5 |</span><br><span class="line">+----+</span><br><span class="line">4 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>从结果可以看出，虽然删除了id为 4 的记录，但是再次插入空值时，并没有重用被删除的 4 ，而是分配了5 。 删除id为 5 的记录，结果如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DELETE FROM test1 where id= 5 ;</span><br></pre></td></tr></table></figure>
+
+<p><strong>重启数据库</strong> ，重新插入一个空值。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO test1 values( 0 );</span><br></pre></td></tr></table></figure>
+
+<p>再次查询数据表test1中的数据，结果如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SELECT * FROM test1;</span><br><span class="line">+----+</span><br><span class="line">| id |</span><br><span class="line">+----+</span><br><span class="line">| 1 |</span><br><span class="line">| 2 |</span><br><span class="line">| 3 |</span><br><span class="line">| 4 |</span><br><span class="line">+----+</span><br><span class="line">4 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>从结果可以看出，新插入的 0 值分配的是 4 ，按照重启前的操作逻辑，此处应该分配 6 。出现上述结果的主要原因是自增主键没有持久化。 在MySQL 5. 7 系统中，对于自增主键的分配规则，是由InnoDB数据字典内部一个<code>计数器</code>来决定的，而该计数器只在<code>内存中维护</code>，并不会持久化到磁盘中。当数据库重启时，该计数器会被初始化。</p>
+<p>在MySQL 8. 0 版本中，上述测试步骤最后一步的结果如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SELECT * FROM test1;</span><br><span class="line">+----+</span><br><span class="line">| id |</span><br><span class="line">+----+</span><br><span class="line">| 1 |</span><br><span class="line">| 2 |</span><br><span class="line">| 3 |</span><br><span class="line">| 6 |</span><br><span class="line">+----+</span><br><span class="line">4 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>从结果可以看出，自增变量已经持久化了。</p>
+<p>MySQL 8. 0 将自增主键的计数器持久化到<code>重做日志</code>中。每次计数器发生改变，都会将其写入重做日志中。如果数据库重启，InnoDB会根据重做日志中的信息来初始化计数器的内存值。</p>
+<hr>
+<h2 id="6-FOREIGN-KEY-约束"><a href="#6-FOREIGN-KEY-约束" class="headerlink" title="6. FOREIGN KEY 约束"></a>6. FOREIGN KEY 约束</h2><hr>
+<h3 id="6-1-作用"><a href="#6-1-作用" class="headerlink" title="6. 1 作用"></a>6. 1 作用</h3><p>限定某个表的某个字段的引用完整性。</p>
+<p>比如：员工表的员工所在部门的选择，必须在部门表能找到对应的部分。</p>
+<p><img src="/2022/04/18/%E7%AC%AC13%E7%AB%A0-%E7%BA%A6%E6%9D%9F/1650272932586.png" alt="1650272932586"></p>
+<h3 id="6-2-关键字"><a href="#6-2-关键字" class="headerlink" title="6. 2 关键字"></a>6. 2 关键字</h3><p>FOREIGN KEY</p>
+<h3 id="6-3-主表和从表-x2F-父表和子表"><a href="#6-3-主表和从表-x2F-父表和子表" class="headerlink" title="6. 3 主表和从表&#x2F;父表和子表"></a>6. 3 主表和从表&#x2F;父表和子表</h3><p>主表（父表）：被引用的表，被参考的表</p>
+<p>从表（子表）：引用别人的表，参考别人的表</p>
+<p>例如：员工表的员工所在部门这个字段的值要参考部门表：部门表是主表，员工表是从表。</p>
+<p>例如：学生表、课程表、选课表：选课表的学生和课程要分别参考学生表和课程表，学生表和课程表是主表，选课表是从表。</p>
+<h3 id="6-4-特点"><a href="#6-4-特点" class="headerlink" title="6. 4 特点"></a>6. 4 特点</h3><ol>
+<li><p>从表的外键列，必须引用&#x2F;参考主表的主键或唯一约束的列</p>
+<p>为什么？因为被依赖&#x2F;被参考的值必须是唯一的</p>
+</li>
+<li><p>在创建外键约束时，如果不给外键约束命名， 默认名不是列名，而是自动产生一个外键名 （例如student_ibfk_1;），也可以指定外键约束名。</p>
+</li>
+<li><p>创建(CREATE)表时就指定外键约束的话，先创建主表，再创建从表</p>
+</li>
+<li><p>删表时，先删从表（或先删除外键约束），再删除主表</p>
+</li>
+<li><p>当主表的记录被从表参照时，主表的记录将不允许删除，如果要删除数据，需要先删除从表中依赖该记录的数据，然后才可以删除主表的数据</p>
+</li>
+<li><p>在“从表”中指定外键约束，并且一个表可以建立多个外键约束</p>
+</li>
+<li><p>从表的外键列与主表被参照的列名字可以不相同，但是数据类型必须一样，逻辑意义一致。如果类型不一样，创建子表时，就会出现错误“ERROR 1005 (HY000): Can’t create table’database.tablename’(errno: 150)”。</p>
+<p>例如：都是表示部门编号，都是int类型。</p>
+</li>
+<li><p>当创建外键约束时，系统默认会在所在的列上建立对应的普通索引 。但是索引名是外键的约束名。（根据外键查询效率很高）</p>
+</li>
+<li><p>删除外键约束后，必须手动删除对应的索引</p>
+</li>
+</ol>
+<h3 id="6-5-添加外键约束"><a href="#6-5-添加外键约束" class="headerlink" title="6. 5 添加外键约束"></a>6. 5 添加外键约束</h3><p>(1) 建表时</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">create table 主表名称(</span><br><span class="line">    字段 1 数据类型 primary key,</span><br><span class="line">    字段 2 数据类型</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">create table 从表名称(</span><br><span class="line">    字段 1 数据类型 primary key,</span><br><span class="line">    字段 2 数据类型,</span><br><span class="line">    [CONSTRAINT &lt;外键约束名称&gt;] FOREIGN KEY（从表的某个字段) references 主表名(被参考字段)</span><br><span class="line">);</span><br><span class="line">#(从表的某个字段)的数据类型必须与主表名(被参考字段)的数据类型一致，逻辑意义也一样</span><br><span class="line">#(从表的某个字段)的字段名可以与主表名(被参考字段)的字段名一样，也可以不一样</span><br><span class="line"></span><br><span class="line">-- FOREIGN KEY: 在表级指定子表中的列</span><br><span class="line">-- REFERENCES: 标示在父表中的列</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">create table dept( #主表</span><br><span class="line">    did int primary key, #部门编号</span><br><span class="line">    dname varchar( 50 ) #部门名称</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">create table emp(#从表</span><br><span class="line">    eid int primary key,  #员工编号</span><br><span class="line">    ename varchar( 5 ), #员工姓名</span><br><span class="line">    deptid int, #员工所在的部门</span><br><span class="line">    foreign key (deptid) references dept(did) #在从表中指定外键约束</span><br><span class="line">    #emp表的deptid和和dept表的did的数据类型一致，意义都是表示部门的编号</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">说明：</span><br><span class="line">（ 1 ）主表dept必须先创建成功，然后才能创建emp表，指定外键成功。</span><br><span class="line">（ 2 ）删除表时，先删除从表emp，再删除主表dept</span><br></pre></td></tr></table></figure>
+
+<p>(2) 建表后</p>
+<p>一般情况下，表与表的关联都是提前设计好了的，因此，会在创建表的时候就把外键约束定义好。不过，如果需要修改表的设计（比如添加新的字段，增加新的关联关系），但没有预先定义外键约束，那么，就要用修改表的方式来补充定义。</p>
+<p>格式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE 从表名 ADD [CONSTRAINT 约束名] FOREIGN KEY (从表的字段) REFERENCES 主表名(被引用字段) [on update xx][on delete xx];</span><br></pre></td></tr></table></figure>
+
+<p>举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE emp</span><br><span class="line">ADD [CONSTRAINT emp_dept_id_fk] FOREIGN KEY(dept_id) REFERENCES dept(dept_id);</span><br></pre></td></tr></table></figure>
+<p>举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">create table dept(</span><br><span class="line">    did int primary key, #部门编号</span><br><span class="line">    dname varchar( 50 ) #部门名称</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">create table emp(</span><br><span class="line">    eid int primary key,  #员工编号</span><br><span class="line">    ename varchar( 5 ), #员工姓名</span><br><span class="line">    deptid int #员工所在的部门</span><br><span class="line">);</span><br><span class="line">#这两个表创建时，没有指定外键的话，那么创建顺序是随意</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table emp add foreign key (deptid) references dept(did);</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-6-演示问题"><a href="#6-6-演示问题" class="headerlink" title="6. 6 演示问题"></a>6. 6 演示问题</h3><ol>
+<li><p>失败：不是键列</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">create table dept(</span><br><span class="line">    did int , #部门编号</span><br><span class="line">    dname varchar( 50 ) #部门名称</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">create table emp(</span><br><span class="line">    eid int primary key,  #员工编号</span><br><span class="line">    ename varchar( 5 ), #员工姓名</span><br><span class="line">    deptid int, #员工所在的部门</span><br><span class="line">    foreign key (deptid) references dept(did)</span><br><span class="line">);</span><br><span class="line">#ERROR 1215 (HY000): Cannot add foreign key constraint 原因是dept的did不是键列</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>失败：数据类型不一致</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">create table dept(</span><br><span class="line">    did int primary key, #部门编号</span><br><span class="line">    dname varchar( 50 ) #部门名称</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">create table emp(</span><br><span class="line">    eid int primary key,  #员工编号</span><br><span class="line">    ename varchar( 5 ), #员工姓名</span><br><span class="line">    deptid char, #员工所在的部门</span><br><span class="line">    foreign key (deptid) references dept(did)</span><br><span class="line">);</span><br><span class="line">#ERROR 1215 (HY000): Cannot add foreign key constraint 原因是从表的deptid字段和主表的did字段的数据类型不一致，并且要它俩的逻辑意义一致</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>成功，两个表字段名一样</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">create table dept(</span><br><span class="line">    did int primary key, #部门编号</span><br><span class="line">    dname varchar( 50 ) #部门名称</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">create table emp(</span><br><span class="line">    eid int primary key,  #员工编号</span><br><span class="line">    ename varchar( 5 ), #员工姓名</span><br><span class="line">    did int, #员工所在的部门</span><br><span class="line">    foreign key (did) references dept(did)</span><br><span class="line">    #emp表的deptid和和dept表的did的数据类型一致，意义都是表示部门的编号</span><br><span class="line">    #是否重名没问题，因为两个did在不同的表中</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加、删除、修改问题</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">create table dept(</span><br><span class="line">    did int primary key, #部门编号</span><br><span class="line">    dname varchar( 50 ) #部门名称</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">create table emp(</span><br><span class="line">    eid int primary key,  #员工编号</span><br><span class="line">    ename varchar( 5 ), #员工姓名</span><br><span class="line">    deptid int, #员工所在的部门</span><br><span class="line">    foreign key (deptid) references dept(did)</span><br><span class="line">    #emp表的deptid和和dept表的did的数据类型一致，意义都是表示部门的编号</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">insert into dept values( 1001 ,&#x27;教学部&#x27;);</span><br><span class="line">insert into dept values( 1003 , &#x27;财务部&#x27;);</span><br><span class="line"></span><br><span class="line">insert into emp values( 1 ,&#x27;张三&#x27;, 1001 ); #添加从表记录成功，在添加这条记录时，要求部门表有 1001 部门</span><br><span class="line"></span><br><span class="line">insert into emp values( 2 ,&#x27;李四&#x27;, 1005 );#添加从表记录失败</span><br><span class="line">ERROR 1452 ( 23000 ): Cannot add（添加） or update（修改） a child row: a foreign key</span><br><span class="line">constraint fails (`atguigudb`.`emp`, CONSTRAINT `emp_ibfk_1` FOREIGN KEY (`deptid`)</span><br><span class="line">REFERENCES `dept` (`did`)) 从表emp添加记录失败，因为主表dept没有 1005 部门</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from dept;</span><br><span class="line">+------+--------+</span><br><span class="line">| did | dname |</span><br><span class="line">+------+--------+</span><br><span class="line">| 1001 | 教学部 |</span><br><span class="line">| 1003 | 财务部 |</span><br><span class="line">+------+--------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from emp;</span><br><span class="line">+-----+-------+--------+</span><br><span class="line">| eid | ename | deptid |</span><br><span class="line">+-----+-------+--------+</span><br><span class="line">| 1 | 张三 | 1001 |</span><br><span class="line">+-----+-------+--------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">update emp set deptid = 1002 where eid = 1 ;#修改从表失败</span><br><span class="line">ERROR 1452 ( 23000 ): Cannot add（添加） or update（修改） a child row（子表的记录）: a foreign key constraint fails（外键约束失败） (`atguigudb`.`emp`, CONSTRAINT `emp_ibfk_1` FOREIGN KEY (`deptid`) REFERENCES `dept` (`did`))  #部门表did字段现在没有 1002 的值，所以员工表中不能修改员工所在部门deptid为 1002</span><br><span class="line"></span><br><span class="line">update dept set did = 1002 where did = 1001 ;#修改主表失败</span><br><span class="line">ERROR 1451 ( 23000 ): Cannot delete（删除） or update（修改） a parent row（父表的记录）: a foreign key constraint fails (`atguigudb`.`emp`, CONSTRAINT `emp_ibfk_1` FOREIGN KEY (`deptid`) REFERENCES `dept` (`did`)) #部门表did的 1001 字段已经被emp引用了，所以部门表的 1001 字段就不能修改了。</span><br><span class="line"></span><br><span class="line">update dept set did = 1002 where did = 1003 ;#修改主表成功 因为部门表的 1003 部门没有被emp表引用，所以可以修改</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">delete from dept where did= 1001 ; #删除主表失败</span><br><span class="line">ERROR 1451 ( 23000 ): Cannot delete（删除） or update（修改） a parent row（父表记录）: a foreign key constraint fails (`atguigudb`.`emp`, CONSTRAINT `emp_ibfk_1` FOREIGN KEY (`deptid`) REFERENCES `dept` (`did`))  #因为部门表did的 1001 字段已经被emp引用了，所以部门表的 1001 字段对应的记录就不能被删除</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>总结：约束关系是针对双方的</p>
+<ul>
+<li>添加了外键约束后，主表的修改和删除数据受约束</li>
+<li>添加了外键约束后，从表的添加和修改数据受约束</li>
+<li>在从表上建立外键，要求主表必须存在</li>
+<li>删除主表时，要求从表从表先删除，或将从表中外键引用该主表的关系先删除</li>
+</ul>
+<h3 id="6-7-约束等级"><a href="#6-7-约束等级" class="headerlink" title="6. 7 约束等级"></a>6. 7 约束等级</h3><ul>
+<li><code>Cascade方式</code>：在父表上update&#x2F;delete记录时，同步update&#x2F;delete掉子表的匹配记录</li>
+<li><code>Set null方式</code>：在父表上update&#x2F;delete记录时，将子表上匹配记录的列设为null，但是要注意子表的外键列不能为not null</li>
+<li><code>No action方式</code>：如果子表中有匹配的记录，则不允许对父表对应候选键进行update&#x2F;delete操作</li>
+<li><code>Restrict方式</code>：同no action， 都是立即检查外键约束</li>
+<li><code>Set default方式</code>（在可视化工具SQLyog中可能显示空白）：父表有变更时，子表将外键列设置成一个默认的值，但Innodb不能识别</li>
+</ul>
+<p>如果没有指定等级，就相当于Restrict方式。</p>
+<p>对于外键约束，最好是采用: <code>ON UPDATE CASCADE ON DELETE RESTRICT</code> 的方式。</p>
+<p>（ 1 ）演示 1 ：on update cascade on delete set null</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">create table dept(</span><br><span class="line">    did int primary key, #部门编号</span><br><span class="line">    dname varchar( 50 ) #部门名称</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">create table emp(</span><br><span class="line">    eid int primary key,  #员工编号</span><br><span class="line">    ename varchar( 5 ), #员工姓名</span><br><span class="line">    deptid int, #员工所在的部门</span><br><span class="line">    foreign key (deptid) references dept(did)  on update cascade on delete set null</span><br><span class="line">    #把修改操作设置为级联修改等级，把删除操作设置为set null等级</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">insert into dept values( 1001 ,&#x27;教学部&#x27;);</span><br><span class="line">insert into dept values( 1002 , &#x27;财务部&#x27;);</span><br><span class="line">insert into dept values( 1003 , &#x27;咨询部&#x27;);</span><br><span class="line"></span><br><span class="line">insert into emp values( 1 ,&#x27;张三&#x27;, 1001 ); #在添加这条记录时，要求部门表有1001部门</span><br><span class="line">insert into emp values( 2 ,&#x27;李四&#x27;, 1001 );</span><br><span class="line">insert into emp values( 3 ,&#x27;王五&#x27;, 1002 );</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from dept;</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from emp;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">#修改主表成功，从表也跟着修改，修改了主表被引用的字段1002为1004，从表的引用字段就跟着修改为1004了</span><br><span class="line">mysql&gt; update dept set did = 1004 where did = 1002 ;</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line">Rows matched: 1 Changed: 1 Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from dept;</span><br><span class="line">+------+--------+</span><br><span class="line">| did | dname |</span><br><span class="line">+------+--------+</span><br><span class="line">| 1001 | 教学部 |</span><br><span class="line">| 1003 | 咨询部 |</span><br><span class="line">| 1004 | 财务部 | #原来是 1002 ，修改为 1004</span><br><span class="line">+------+--------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from emp;</span><br><span class="line">+-----+-------+--------+</span><br><span class="line">| eid | ename | deptid |</span><br><span class="line">+-----+-------+--------+</span><br><span class="line">| 1 | 张三 | 1001 |</span><br><span class="line">| 2 | 李四 | 1001 |</span><br><span class="line">| 3 | 王五 | 1004 | #原来是 1002 ，跟着修改为 1004</span><br><span class="line">+-----+-------+--------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">#删除主表的记录成功，从表对应的字段的值被修改为null</span><br><span class="line">mysql&gt; delete from dept where did = 1001 ;</span><br><span class="line">Query OK, 1 row affected (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from dept;</span><br><span class="line">+------+--------+</span><br><span class="line">| did | dname | #记录 1001 部门被删除了</span><br><span class="line">+------+--------+</span><br><span class="line">| 1003 | 咨询部 |</span><br><span class="line">| 1004 | 财务部 |</span><br><span class="line">+------+--------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from emp;</span><br><span class="line">+-----+-------+--------+</span><br><span class="line">| eid | ename | deptid |</span><br><span class="line">+-----+-------+--------+</span><br><span class="line">| 1 | 张三 | NULL | #原来引用 1001 部门的员工，deptid字段变为null</span><br><span class="line">| 2 | 李四 | NULL |</span><br><span class="line">| 3 | 王五 | 1004 |</span><br><span class="line">+-----+-------+--------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>（ 2 ）演示 2 ：on update set null on delete cascade</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">create table dept(</span><br><span class="line">    did int primary key, #部门编号</span><br><span class="line">    dname varchar( 50 ) #部门名称</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">create table emp(</span><br><span class="line">    eid int primary key,  #员工编号</span><br><span class="line">    ename varchar( 5 ), #员工姓名</span><br><span class="line">    deptid int, #员工所在的部门</span><br><span class="line">    foreign key (deptid) references dept(did)  on update set null on delete cascade</span><br><span class="line">    #把修改操作设置为set null等级，把删除操作设置为级联删除等级</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">insert into dept values( 1001 ,&#x27;教学部&#x27;);</span><br><span class="line">insert into dept values( 1002 , &#x27;财务部&#x27;);</span><br><span class="line">insert into dept values( 1003 , &#x27;咨询部&#x27;);</span><br><span class="line"></span><br><span class="line">insert into emp values( 1 ,&#x27;张三&#x27;, 1001 ); #在添加这条记录时，要求部门表有 1001 部门</span><br><span class="line">insert into emp values( 2 ,&#x27;李四&#x27;, 1001 );</span><br><span class="line">insert into emp values( 3 ,&#x27;王五&#x27;, 1002 );</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from dept;</span><br><span class="line">+------+--------+</span><br><span class="line">| did | dname |</span><br><span class="line">+------+--------+</span><br><span class="line">| 1001 | 教学部 |</span><br><span class="line">| 1002 | 财务部 |</span><br><span class="line">| 1003 | 咨询部 |</span><br><span class="line">+------+--------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from emp;</span><br><span class="line">+-----+-------+--------+</span><br><span class="line">| eid | ename | deptid |</span><br><span class="line">+-----+-------+--------+</span><br><span class="line">| 1 | 张三 | 1001 |</span><br><span class="line">| 2 | 李四 | 1001 |</span><br><span class="line">| 3 | 王五 | 1002 |</span><br><span class="line">+-----+-------+--------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from dept;</span><br><span class="line">+------+--------+</span><br><span class="line">| did | dname |#修改主表，从表对应的字段设置为null</span><br><span class="line">mysql&gt; update dept set did = 1004 where did = 1002 ;</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line">Rows matched: 1 Changed: 1 Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from dept;</span><br><span class="line">+------+--------+</span><br><span class="line">| did | dname |</span><br><span class="line">+------+--------+</span><br><span class="line">| 1001 | 教学部 |</span><br><span class="line">| 1003 | 咨询部 |</span><br><span class="line">| 1004 | 财务部 | #原来did是 1002</span><br><span class="line">+------+--------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from emp;</span><br><span class="line">+-----+-------+--------+</span><br><span class="line">| eid | ename | deptid |</span><br><span class="line">+-----+-------+--------+</span><br><span class="line">| 1 | 张三 | 1001 |</span><br><span class="line">| 2 | 李四 | 1001 |</span><br><span class="line">| 3 | 王五 | NULL | #原来deptid是 1002 ，因为部门表 1002 被修改了， 1002 没有对应的了，就设置为null</span><br><span class="line">+-----+-------+--------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#删除主表的记录成功，主表的 1001 行被删除了，从表相应的记录也被删除了</span><br><span class="line">mysql&gt; delete from dept where did= 1001 ;</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from dept;</span><br><span class="line">+------+--------+</span><br><span class="line">| did | dname | #部门表中 1001 部门被删除</span><br><span class="line">+------+--------+</span><br><span class="line">| 1003 | 咨询部 |</span><br><span class="line">| 1004 | 财务部 |</span><br><span class="line">+------+--------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from emp;</span><br><span class="line">+-----+-------+--------+</span><br><span class="line">| eid | ename | deptid |#原来 1001 部门的员工也被删除了</span><br><span class="line">+-----+-------+--------+</span><br><span class="line">| 3 | 王五 | NULL |</span><br><span class="line">+-----+-------+--------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>（ 3 ）演示：on update cascade on delete cascade</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">create table dept(</span><br><span class="line">    did int primary key, #部门编号</span><br><span class="line">    dname varchar( 50 ) #部门名称</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">create table emp(</span><br><span class="line">    eid int primary key,  #员工编号</span><br><span class="line">    ename varchar( 5 ), #员工姓名</span><br><span class="line">    deptid int, #员工所在的部门</span><br><span class="line">    foreign key (deptid) references dept(did)  on update cascade on delete cascade</span><br><span class="line">    #把修改操作设置为级联修改等级，把删除操作也设置为级联删除等级</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">insert into dept values( 1001 ,&#x27;教学部&#x27;);</span><br><span class="line">insert into dept values( 1002 , &#x27;财务部&#x27;);</span><br><span class="line">insert into dept values( 1003 , &#x27;咨询部&#x27;);</span><br><span class="line"></span><br><span class="line">insert into emp values( 1 ,&#x27;张三&#x27;, 1001 ); #在添加这条记录时，要求部门表有1001部门</span><br><span class="line">insert into emp values( 2 ,&#x27;李四&#x27;, 1001 );</span><br><span class="line">insert into emp values( 3 ,&#x27;王五&#x27;, 1002 );</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from dept;</span><br><span class="line">+------+--------+</span><br><span class="line">| did | dname |</span><br><span class="line">+------+--------+</span><br><span class="line">| 1001 | 教学部 |</span><br><span class="line">| 1002 | 财务部 |</span><br><span class="line">| 1003 | 咨询部 |</span><br><span class="line">+------+--------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from emp;</span><br><span class="line">+-----+-------+--------+</span><br><span class="line">| eid | ename | deptid |</span><br><span class="line">+-----+-------+--------+</span><br><span class="line">| 1 | 张三 | 1001 |</span><br><span class="line">| 2 | 李四 | 1001 |</span><br><span class="line">| 3 | 王五 | 1002 |</span><br><span class="line">+-----+-------+--------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">#修改主表，从表对应的字段自动修改</span><br><span class="line">mysql&gt; update dept set did = 1004 where did = 1002 ;</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line">Rows matched: 1 Changed: 1 Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from dept;</span><br><span class="line">+------+--------+</span><br><span class="line">| did | dname |</span><br><span class="line">+------+--------+</span><br><span class="line">| 1001 | 教学部 |</span><br><span class="line">| 1003 | 咨询部 |</span><br><span class="line">| 1004 | 财务部 | #部门 1002 修改为 1004</span><br><span class="line">+------+--------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from emp;</span><br><span class="line">+-----+-------+--------+</span><br><span class="line">| eid | ename | deptid |</span><br><span class="line">+-----+-------+--------+</span><br><span class="line">| 1 | 张三 | 1001 |</span><br><span class="line">| 2 | 李四 | 1001 |</span><br><span class="line">| 3 | 王五 | 1004 | #级联修改</span><br><span class="line">+-----+-------+--------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#删除主表的记录成功，主表的 1001 行被删除了，从表相应的记录也被删除了</span><br><span class="line">mysql&gt; delete from dept where did= 1001 ;</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from dept;</span><br><span class="line">+------+--------+</span><br><span class="line">| did | dname | #1001部门被删除了</span><br><span class="line">+------+--------+</span><br><span class="line">| 1003 | 咨询部 |</span><br><span class="line">| 1004 | 财务部 |</span><br><span class="line">+------+--------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from emp;</span><br><span class="line">+-----+-------+--------+</span><br><span class="line">| eid | ename | deptid |  #1001部门的员工也被删除了</span><br><span class="line">+-----+-------+--------+</span><br><span class="line">| 3 | 王五 | 1004 |</span><br><span class="line">+-----+-------+--------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<h3 id="6-8-删除外键约束"><a href="#6-8-删除外键约束" class="headerlink" title="6. 8 删除外键约束"></a>6. 8 删除外键约束</h3><p>流程如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">( 1 )第一步先查看约束名和删除外键约束</span><br><span class="line">SELECT * FROM information_schema.table_constraints WHERE table_name = &#x27;表名称&#x27;;#查看某个表的约束名</span><br><span class="line"></span><br><span class="line">ALTER TABLE 从表名 DROP FOREIGN KEY 外键约束名;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">（ 2 ）第二步查看索引名和删除索引。（注意，只能手动删除）</span><br><span class="line">SHOW INDEX FROM 表名称; #查看某个表的索引名</span><br><span class="line"></span><br><span class="line">ALTER TABLE 从表名 DROP INDEX 索引名;</span><br></pre></td></tr></table></figure>
+
+<p>举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SELECT * FROM information_schema.table_constraints WHERE table_name = &#x27;emp&#x27;;</span><br><span class="line"></span><br><span class="line">mysql&gt; alter table emp drop foreign key emp_ibfk_1;</span><br><span class="line">Query OK, 0 rows affected (0.02 sec)</span><br><span class="line">Records: 0 Duplicates: 0 Warnings: 0</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show index from emp;</span><br><span class="line"></span><br><span class="line">mysql&gt; alter table emp drop index deptid;</span><br><span class="line">Query OK, 0 rows affected (0.01 sec)</span><br><span class="line">Records: 0 Duplicates: 0 Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt;  show index from emp;</span><br></pre></td></tr></table></figure>
+<h3 id="6-9-开发场景"><a href="#6-9-开发场景" class="headerlink" title="6. 9 开发场景"></a>6. 9 开发场景</h3><p><strong>问题 1 ：如果两个表之间有关系（一对一、一对多），比如：员工表和部门表（一对多），它们之间是否一定要建外键约束？</strong></p>
+<p>答：不是的</p>
+<p><strong>问题 2 ：建和不建外键约束有什么区别？</strong></p>
+<p>答：建外键约束，你的操作（创建表、删除表、添加、修改、删除）会受到限制，从语法层面受到限制。例如：在员工表中不可能添加一个员工信息，它的部门的值在部门表中找不到。</p>
+<p>不建外键约束，你的操作（创建表、删除表、添加、修改、删除）不受限制，要保证数据的<code>引用完整性</code>，只能<code>依靠程序员的自觉</code>，或者是<code>在Java程序中进行限定</code>。例如：在员工表中，可以添加一个员工的信息，它的部门指定为一个完全不存在的部门。</p>
+<p><strong>问题 3 ：那么建和不建外键约束和查询有没有关系？</strong></p>
+<p>答：没有</p>
+<blockquote>
+<p>在 MySQL 里，外键约束是有成本的，需要消耗系统资源。对于大并发的 SQL 操作，有可能会不适合。比如大型网站的中央数据库，可能会<code>因为外键约束的系统开销而变得非常慢</code>。所以， MySQL 允许你不使用系统自带的外键约束，在<code>应用层面</code>完成检查数据一致性的逻辑。也就是说，即使你不用外键约束，也要想办法通过应用层面的附加逻辑，来实现外键约束的功能，确保数据的一致性。</p>
+</blockquote>
+<h3 id="6-10-阿里开发规范"><a href="#6-10-阿里开发规范" class="headerlink" title="6. 10 阿里开发规范"></a>6. 10 阿里开发规范</h3><p>【<code>强制</code>】不得使用外键与级联，一切外键概念必须在应用层解决。</p>
+<p>说明：（概念解释）学生表中的 student_id 是主键，那么成绩表中的 student_id 则为外键。如果更新学生表中的 student_id，同时触发成绩表中的 student_id 更新，即为级联更新。外键与级联更新适用于<code>单机低并发</code>，不适合<code>分布式</code>、<code>高并发集群</code>；级联更新是强阻塞，存在数据库<code>更新风暴</code>的风险；外键影响数据库的<code>插入速度</code>。</p>
+<hr>
+<h2 id="7-CHECK-约束"><a href="#7-CHECK-约束" class="headerlink" title="7. CHECK 约束"></a>7. CHECK 约束</h2><hr>
+<h3 id="7-1-作用"><a href="#7-1-作用" class="headerlink" title="7. 1 作用"></a>7. 1 作用</h3><p>检查某个字段的值是否符号xx要求，一般指的是值的范围</p>
+<h3 id="7-2-、关键字"><a href="#7-2-、关键字" class="headerlink" title="7. 2 、关键字"></a>7. 2 、关键字</h3><p>CHECK</p>
+<h3 id="7-3-、说明：MySQL-5-7-不支持"><a href="#7-3-、说明：MySQL-5-7-不支持" class="headerlink" title="7. 3 、说明：MySQL 5. 7 不支持"></a>7. 3 、说明：MySQL 5. 7 不支持</h3><p>MySQL5.7 可以使用check约束，但check约束对数据验证没有任何作用。添加数据时，没有任何错误或警告</p>
+<p>但是 <strong>MySQL 8.0中可以使用check约束了</strong> 。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">create table employee(</span><br><span class="line">    eid int primary key,</span><br><span class="line">    ename varchar( 5 ),</span><br><span class="line">    gender char check (&#x27;男&#x27; or &#x27;女&#x27;)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into employee values( 1 ,&#x27;张三&#x27;,&#x27;妖&#x27;);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from employee;</span><br><span class="line">+-----+-------+--------+</span><br><span class="line">| eid | ename | gender |</span><br><span class="line">+-----+-------+--------+</span><br><span class="line">| 1 | 张三 | 妖 |</span><br><span class="line">+-----+-------+--------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>再举例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE temp(</span><br><span class="line">    id INT AUTO_INCREMENT,</span><br><span class="line">    NAME VARCHAR( 20 ),</span><br><span class="line">    age INT CHECK(age &gt; 20 ),</span><br><span class="line">    PRIMARY KEY(id)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>再举例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">age tinyint check(age &gt; 20 ) 或 sex char( 2 ) check(sex in(‘男’,’女’))</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>再举例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CHECK(height&gt;= 0 AND height&lt; 3 )</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h2 id="8-DEFAULT约束"><a href="#8-DEFAULT约束" class="headerlink" title="8. DEFAULT约束"></a>8. DEFAULT约束</h2><hr>
+<h3 id="8-1-作用"><a href="#8-1-作用" class="headerlink" title="8. 1 作用"></a>8. 1 作用</h3><p>给某个字段&#x2F;某列指定默认值，一旦设置默认值，在插入数据时，如果此字段没有显式赋值，则赋值为默认值。</p>
+<h3 id="8-2-关键字"><a href="#8-2-关键字" class="headerlink" title="8. 2 关键字"></a>8. 2 关键字</h3><p>DEFAULT</p>
+<h3 id="8-3-如何给字段加默认值"><a href="#8-3-如何给字段加默认值" class="headerlink" title="8. 3 如何给字段加默认值"></a>8. 3 如何给字段加默认值</h3><p>(1) 建表时</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">create table 表名称(</span><br><span class="line">    字段名 数据类型 primary key,</span><br><span class="line">    字段名 数据类型 unique key not null,</span><br><span class="line">    字段名 数据类型 unique key,</span><br><span class="line">    字段名 数据类型 not null default 默认值,</span><br><span class="line">);</span><br><span class="line">create table 表名称(</span><br><span class="line">    字段名 数据类型 default 默认值 ,</span><br><span class="line">    字段名 数据类型 not null default 默认值,</span><br><span class="line">    字段名 数据类型 not null default 默认值,</span><br><span class="line">    primary key(字段名),</span><br><span class="line">    unique key(字段名)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">说明：默认值约束一般不在唯一键和主键列上加</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">create table employee(</span><br><span class="line">    eid int primary key,</span><br><span class="line">    ename varchar( 20 ) not null,</span><br><span class="line">    gender char default &#x27;男&#x27;,</span><br><span class="line">    tel char( 11 ) not null default &#x27;&#x27; #默认是空字符串</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; desc employee;</span><br><span class="line">+--------+-------------+------+-----+---------+-------+</span><br><span class="line">| Field | Type | Null | Key | Default | Extra |</span><br><span class="line">+--------+-------------+------+-----+---------+-------+</span><br><span class="line">| eid | int( 11 ) | NO | PRI | NULL | |</span><br><span class="line">| ename | varchar( 20 ) | NO | | NULL | |</span><br><span class="line">| gender | char( 1 ) | YES | | 男 | |</span><br><span class="line">| tel | char( 11 ) | NO | | | |</span><br><span class="line">+--------+-------------+------+-----+---------+-------+</span><br><span class="line">4 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into employee values( 1 ,&#x27;汪飞&#x27;,&#x27;男&#x27;,&#x27;13700102535&#x27;); #成功</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from employee;</span><br><span class="line">+-----+-------+--------+-------------+</span><br><span class="line">| eid | ename | gender | tel |</span><br><span class="line">+-----+-------+--------+-------------+</span><br><span class="line">| 1 | 汪飞 | 男 | 13700102535 |</span><br><span class="line">+-----+-------+--------+-------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into employee(eid,ename) values( 2 ,&#x27;天琪&#x27;); #成功</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from employee;</span><br><span class="line">+-----+-------+--------+-------------+</span><br><span class="line">| eid | ename | gender | tel |</span><br><span class="line">+-----+-------+--------+-------------+</span><br><span class="line">| 1 | 汪飞 | 男 | 13700102535 |</span><br><span class="line">| 2 | 天琪 | 男 | |</span><br><span class="line">+-----+-------+--------+-------------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">insert into employee(eid,ename) values( 3 ,&#x27;二虎&#x27;);</span><br><span class="line">#ERROR 1062 (23000): Duplicate entry &#x27;&#x27; for key &#x27;tel&#x27;</span><br><span class="line">#如果tel有唯一性约束的话会报错，如果tel没有唯一性约束，可以添加成功</span><br></pre></td></tr></table></figure>
+
+<p>再举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE myemp(</span><br><span class="line">    id INT AUTO_INCREMENT PRIMARY KEY,</span><br><span class="line">    NAME VARCHAR( 15 ),</span><br><span class="line">    salary DOUBLE( 10 , 2 ) DEFAULT 2000</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>(2) 建表后</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">alter table 表名称 modify 字段名 数据类型 default 默认值;</span><br><span class="line"></span><br><span class="line">#如果这个字段原来有非空约束，你还保留非空约束，那么在加默认值约束时，还得保留非空约束，否则非空约束就被删除了</span><br><span class="line">#同理，在给某个字段加非空约束也一样，如果这个字段原来有默认值约束，你想保留，也要在modify语句中保留默认值约束，否则就删除了</span><br><span class="line">alter table 表名称 modify 字段名 数据类型 default 默认值 not null;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">create table employee(</span><br><span class="line">eid int primary key,</span><br><span class="line">ename varchar( 20 ),</span><br><span class="line">gender char,</span><br><span class="line">tel char( 11 ) not null</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; desc employee;</span><br><span class="line">+--------+-------------+------+-----+---------+-------+</span><br><span class="line">| Field | Type | Null | Key | Default | Extra |</span><br><span class="line">+--------+-------------+------+-----+---------+-------+</span><br><span class="line">| eid | int( 11 ) | NO | PRI | NULL | |</span><br><span class="line">| ename | varchar( 20 ) | YES | | NULL | |</span><br><span class="line">| gender | char( 1 ) | YES | | NULL | |</span><br><span class="line">| tel | char( 11 ) | NO | | NULL | |</span><br><span class="line">+--------+-------------+------+-----+---------+-------+</span><br><span class="line">4 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alter table employee modify gender char default &#x27;男&#x27;;  #给gender字段增加默认值约束</span><br><span class="line">alter table employee modify tel char( 11 ) default &#x27;&#x27;; #给tel字段增加默认值约束</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; desc employee;</span><br><span class="line">+--------+-------------+------+-----+---------+-------+</span><br><span class="line">| Field | Type | Null | Key | Default | Extra |</span><br><span class="line">+--------+-------------+------+-----+---------+-------+</span><br><span class="line">| eid | int( 11 ) | NO | PRI | NULL | |</span><br><span class="line">| ename | varchar( 20 ) | YES | | NULL | |</span><br><span class="line">| gender | char( 1 ) | YES | | 男 | |</span><br><span class="line">| tel | char( 11 ) | YES | | | |</span><br><span class="line">+--------+-------------+------+-----+---------+-------+</span><br><span class="line">4 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table employee modify tel char( 11 ) default &#x27;&#x27; not null;#给tel字段增加默认值约束，并保留非空约束</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; desc employee;</span><br><span class="line">+--------+-------------+------+-----+---------+-------+</span><br><span class="line">| Field | Type | Null | Key | Default | Extra |</span><br><span class="line">+--------+-------------+------+-----+---------+-------+</span><br><span class="line">| eid | int( 11 ) | NO | PRI | NULL | |</span><br><span class="line">| ename | varchar( 20 ) | YES | | NULL | |</span><br><span class="line">| gender | char( 1 ) | YES | | 男 | |</span><br><span class="line">| tel | char( 11 ) | NO | | | |</span><br><span class="line">+--------+-------------+------+-----+---------+-------+</span><br><span class="line">4 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h3 id="8-4-如何删除默认值约束"><a href="#8-4-如何删除默认值约束" class="headerlink" title="8. 4 如何删除默认值约束"></a>8. 4 如何删除默认值约束</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">alter table 表名称 modify 字段名 数据类型 ;#删除默认值约束，也不保留非空约束</span><br><span class="line"></span><br><span class="line">alter table 表名称 modify 字段名 数据类型 not null; #删除默认值约束，保留非空约束</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alter table employee modify gender char; #删除gender字段默认值约束，如果有非空约束，也一并删除</span><br><span class="line">alter table employee modify tel char( 11 )  not null;#删除tel字段默认值约束，保留非空约束</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; desc employee;</span><br><span class="line">+--------+-------------+------+-----+---------+-------+</span><br><span class="line">| Field | Type | Null | Key | Default | Extra |</span><br><span class="line">+--------+-------------+------+-----+---------+-------+</span><br><span class="line">| eid | int( 11 ) | NO | PRI | NULL | |</span><br><span class="line">| ename | varchar( 20 ) | YES | | NULL | |</span><br><span class="line">| gender | char( 1 ) | YES | | NULL | |</span><br><span class="line">| tel | char( 11 ) | NO | | NULL | |</span><br><span class="line">+--------+-------------+------+-----+---------+-------+</span><br><span class="line">4 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="9-面试"><a href="#9-面试" class="headerlink" title="9. 面试"></a>9. 面试</h2><hr>
+<p><strong>面试 1 、为什么建表时，加 not null default ‘’ 或 default 0</strong></p>
+<p>答：不想让表中出现null值。</p>
+<p><strong>面试 2 、为什么不想要 null 的值</strong></p>
+<p>答:（ 1 ）不好比较。null是一种特殊值，比较时只能用专门的is null 和 is not null来比较。碰到运算符，通常返回null。</p>
+<p>（ 2 ）效率不高。影响提高索引效果。因此，我们往往在建表时 not null default ‘’ 或 default 0</p>
+<p><strong>面试 3 、带AUTO_INCREMENT约束的字段值是从 1 开始的吗？</strong> </p>
+<p>答：在MySQL中，默认AUTO_INCREMENT的初始值是 1 ，每新增一条记录，字段值自动加 1 。设置自增属性（AUTO_INCREMENT）的时候，还可以指定第一条插入记录的自增字段的值，这样新插入的记录的自增字段值从初始值开始递增，如在表中插入第一条记录，同时指定id值为 5 ，则以后插入的记录的id值就会从 6 开始往上增加。添加主键约束时，往往需要设置字段自动增加属性。</p>
+<p><strong>面试 4 、并不是每个表都可以任意选择存储引擎？</strong> </p>
+<p>答：外键约束（FOREIGN KEY）不能跨引擎使用。<br>MySQL支持多种存储引擎，每一个表都可以指定一个不同的存储引擎，需要注意的是：外键约束是用来保证数据的参照完整性的，如果表之间需要关联外键，却指定了不同的存储引擎，那么这些表之间是不能创建外键约束的。所以说，存储引擎的选择也不完全是随意的。</p>
+<hr>
+<p>笔记创建者：王圳</p>
+<p>参考讲师：尚硅谷 宋红康（江湖人称：康师傅）</p>
+
+      <div>
+        
+          <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本 文 结 束 <i class="fa fa-paw"></i> 感 谢 您 的 阅 读-------------</div>
+    
+</div>
+        
+      </div>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/MySQL/" rel="tag"># MySQL</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/04/17/%E7%AC%AC12%E7%AB%A0-MySQL%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E7%B2%BE%E8%AE%B2/" rel="prev" title="第12章_MySQL数据类型精讲">
+      <i class="fa fa-chevron-left"></i> 第12章_MySQL数据类型精讲
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E7%BA%A6%E6%9D%9F-constraint-%E6%A6%82%E8%BF%B0"><span class="nav-text">1. 约束(constraint)概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E7%BA%A6%E6%9D%9F"><span class="nav-text">1. 1 为什么需要约束</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E4%BB%80%E4%B9%88%E6%98%AF%E7%BA%A6%E6%9D%9F"><span class="nav-text">1. 2 什么是约束</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E7%BA%A6%E6%9D%9F%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-text">1. 3 约束的分类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E9%9D%9E%E7%A9%BA%E7%BA%A6%E6%9D%9F"><span class="nav-text">2. 非空约束</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E4%BD%9C%E7%94%A8"><span class="nav-text">2. 1 作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-text">2. 2 关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E7%89%B9%E7%82%B9"><span class="nav-text">2. 3 特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-%E6%B7%BB%E5%8A%A0%E9%9D%9E%E7%A9%BA%E7%BA%A6%E6%9D%9F"><span class="nav-text">2. 4 添加非空约束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-%E5%88%A0%E9%99%A4%E9%9D%9E%E7%A9%BA%E7%BA%A6%E6%9D%9F"><span class="nav-text">2. 5 删除非空约束</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%94%AF%E4%B8%80%E6%80%A7%E7%BA%A6%E6%9D%9F"><span class="nav-text">3. 唯一性约束</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E4%BD%9C%E7%94%A8"><span class="nav-text">3. 1 作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-text">3. 2 关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E7%89%B9%E7%82%B9"><span class="nav-text">3. 3 特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-%E6%B7%BB%E5%8A%A0%E5%94%AF%E4%B8%80%E7%BA%A6%E6%9D%9F"><span class="nav-text">3. 4 添加唯一约束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-%E5%85%B3%E4%BA%8E%E5%A4%8D%E5%90%88%E5%94%AF%E4%B8%80%E7%BA%A6%E6%9D%9F"><span class="nav-text">3. 5 关于复合唯一约束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-%E5%88%A0%E9%99%A4%E5%94%AF%E4%B8%80%E7%BA%A6%E6%9D%9F"><span class="nav-text">3. 6 删除唯一约束</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-PRIMARY-KEY-%E7%BA%A6%E6%9D%9F"><span class="nav-text">4. PRIMARY KEY 约束</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E4%BD%9C%E7%94%A8"><span class="nav-text">4. 1 作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-text">4. 2 关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-%E7%89%B9%E7%82%B9"><span class="nav-text">4. 3 特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-%E6%B7%BB%E5%8A%A0%E4%B8%BB%E9%94%AE%E7%BA%A6%E6%9D%9F"><span class="nav-text">4. 4 添加主键约束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-5-%E5%85%B3%E4%BA%8E%E5%A4%8D%E5%90%88%E4%B8%BB%E9%94%AE"><span class="nav-text">4. 5 关于复合主键</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-6-%E5%88%A0%E9%99%A4%E4%B8%BB%E9%94%AE%E7%BA%A6%E6%9D%9F"><span class="nav-text">4. 6 删除主键约束</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E8%87%AA%E5%A2%9E%E5%88%97%EF%BC%9AAUTO-INCREMENT"><span class="nav-text">5. 自增列：AUTO_INCREMENT</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-%E4%BD%9C%E7%94%A8"><span class="nav-text">5. 1 作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-text">5. 2 关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-%E7%89%B9%E7%82%B9%E5%92%8C%E8%A6%81%E6%B1%82"><span class="nav-text">5. 3 特点和要求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-4-%E5%A6%82%E4%BD%95%E6%8C%87%E5%AE%9A%E8%87%AA%E5%A2%9E%E7%BA%A6%E6%9D%9F"><span class="nav-text">5. 4 如何指定自增约束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-5-%E5%A6%82%E4%BD%95%E5%88%A0%E9%99%A4%E8%87%AA%E5%A2%9E%E7%BA%A6%E6%9D%9F"><span class="nav-text">5. 5 如何删除自增约束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-6-MySQL-8-0-%E6%96%B0%E7%89%B9%E6%80%A7%E2%80%94%E8%87%AA%E5%A2%9E%E5%8F%98%E9%87%8F%E7%9A%84%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-text">5. 6 MySQL 8. 0 新特性—自增变量的持久化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-FOREIGN-KEY-%E7%BA%A6%E6%9D%9F"><span class="nav-text">6. FOREIGN KEY 约束</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-%E4%BD%9C%E7%94%A8"><span class="nav-text">6. 1 作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-text">6. 2 关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-%E4%B8%BB%E8%A1%A8%E5%92%8C%E4%BB%8E%E8%A1%A8-x2F-%E7%88%B6%E8%A1%A8%E5%92%8C%E5%AD%90%E8%A1%A8"><span class="nav-text">6. 3 主表和从表&#x2F;父表和子表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-4-%E7%89%B9%E7%82%B9"><span class="nav-text">6. 4 特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-5-%E6%B7%BB%E5%8A%A0%E5%A4%96%E9%94%AE%E7%BA%A6%E6%9D%9F"><span class="nav-text">6. 5 添加外键约束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-6-%E6%BC%94%E7%A4%BA%E9%97%AE%E9%A2%98"><span class="nav-text">6. 6 演示问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-7-%E7%BA%A6%E6%9D%9F%E7%AD%89%E7%BA%A7"><span class="nav-text">6. 7 约束等级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-8-%E5%88%A0%E9%99%A4%E5%A4%96%E9%94%AE%E7%BA%A6%E6%9D%9F"><span class="nav-text">6. 8 删除外键约束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-9-%E5%BC%80%E5%8F%91%E5%9C%BA%E6%99%AF"><span class="nav-text">6. 9 开发场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-10-%E9%98%BF%E9%87%8C%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83"><span class="nav-text">6. 10 阿里开发规范</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-CHECK-%E7%BA%A6%E6%9D%9F"><span class="nav-text">7. CHECK 约束</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-%E4%BD%9C%E7%94%A8"><span class="nav-text">7. 1 作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-%E3%80%81%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-text">7. 2 、关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-3-%E3%80%81%E8%AF%B4%E6%98%8E%EF%BC%9AMySQL-5-7-%E4%B8%8D%E6%94%AF%E6%8C%81"><span class="nav-text">7. 3 、说明：MySQL 5. 7 不支持</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-DEFAULT%E7%BA%A6%E6%9D%9F"><span class="nav-text">8. DEFAULT约束</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-1-%E4%BD%9C%E7%94%A8"><span class="nav-text">8. 1 作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-2-%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-text">8. 2 关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-3-%E5%A6%82%E4%BD%95%E7%BB%99%E5%AD%97%E6%AE%B5%E5%8A%A0%E9%BB%98%E8%AE%A4%E5%80%BC"><span class="nav-text">8. 3 如何给字段加默认值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-4-%E5%A6%82%E4%BD%95%E5%88%A0%E9%99%A4%E9%BB%98%E8%AE%A4%E5%80%BC%E7%BA%A6%E6%9D%9F"><span class="nav-text">8. 4 如何删除默认值约束</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-%E9%9D%A2%E8%AF%95"><span class="nav-text">9. 面试</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Wang Zhen"
+      src="/uploads/avatar.png#/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Wang Zhen</p>
+  <div class="site-description" itemprop="description">请出示行程码、健康码，配戴好口罩浏览本站😜</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/new-Wangz" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;new-Wangz" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mrwangz@qq.com" title="E-Mail → mailto:mrwangz@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/5514641355" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;5514641355" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-cat"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wang Zhen</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : true,
+      appId      : 'XnOon4MAqmL0Li6MykTmnsGH-gzGzoHsz',
+      appKey     : 'GumdfwNMNMtwCdHQO6IjvtuO',
+      placeholder: "Would you like to leave a message?",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
