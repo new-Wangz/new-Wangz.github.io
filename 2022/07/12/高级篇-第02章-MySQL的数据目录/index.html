@@ -22,22 +22,20 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="小学是大同大学的附属小学，每天上下学穿梭在大学校">
+  <meta name="description" content="1. MySQL8的主要目录结构">
 <meta property="og:type" content="article">
-<meta property="og:title" content="疫情当下">
-<meta property="og:url" content="http://example.com/2022/04/07/%E7%96%AB%E6%83%85%E5%BD%93%E4%B8%8B/index.html">
+<meta property="og:title" content="高级篇-第02章-MySQL的数据目录">
+<meta property="og:url" content="http://example.com/2022/07/12/%E9%AB%98%E7%BA%A7%E7%AF%87-%E7%AC%AC02%E7%AB%A0-MySQL%E7%9A%84%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95/index.html">
 <meta property="og:site_name" content="W Z B L O G">
-<meta property="og:description" content="小学是大同大学的附属小学，每天上下学穿梭在大学校">
+<meta property="og:description" content="1. MySQL8的主要目录结构">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2022/04/07/%E7%96%AB%E6%83%85%E5%BD%93%E4%B8%8B/4f3e39d33ae87ea0c916aa3e58e3fab.jpg">
-<meta property="article:published_time" content="2022-04-07T07:15:02.000Z">
-<meta property="article:modified_time" content="2022-04-07T08:46:05.200Z">
+<meta property="article:published_time" content="2022-07-12T08:19:06.000Z">
+<meta property="article:modified_time" content="2022-07-12T08:26:56.827Z">
 <meta property="article:author" content="Wang Zhen">
-<meta property="article:tag" content="COVID_19">
+<meta property="article:tag" content="MySQL高级篇">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2022/04/07/%E7%96%AB%E6%83%85%E5%BD%93%E4%B8%8B/4f3e39d33ae87ea0c916aa3e58e3fab.jpg">
 
-<link rel="canonical" href="http://example.com/2022/04/07/%E7%96%AB%E6%83%85%E5%BD%93%E4%B8%8B/">
+<link rel="canonical" href="http://example.com/2022/07/12/%E9%AB%98%E7%BA%A7%E7%AF%87-%E7%AC%AC02%E7%AB%A0-MySQL%E7%9A%84%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95/">
 
 
 <script id="page-configurations">
@@ -50,7 +48,7 @@
   };
 </script>
 
-  <title>疫情当下 | W Z B L O G</title>
+  <title>高级篇-第02章-MySQL的数据目录 | W Z B L O G</title>
   
 
 
@@ -166,7 +164,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/07/%E7%96%AB%E6%83%85%E5%BD%93%E4%B8%8B/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/12/%E9%AB%98%E7%BA%A7%E7%AF%87-%E7%AC%AC02%E7%AB%A0-MySQL%E7%9A%84%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/uploads/avatar.png#/images/avatar.gif">
@@ -179,7 +177,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          疫情当下
+          高级篇-第02章-MySQL的数据目录
         </h1>
 
         <div class="post-meta">
@@ -190,7 +188,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-04-07 15:15:02 / 修改时间：16:46:05" itemprop="dateCreated datePublished" datetime="2022-04-07T15:15:02+08:00">2022-04-07</time>
+              <time title="创建时间：2022-07-12 16:19:06 / 修改时间：16:26:56" itemprop="dateCreated datePublished" datetime="2022-07-12T16:19:06+08:00">2022-07-12</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -198,12 +196,12 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%9A%8F%E7%AC%94/" itemprop="url" rel="index"><span itemprop="name">随笔</span></a>
+                  <a href="/categories/%E6%8A%80%E6%9C%AF%E5%8D%9A%E5%AE%A2/" itemprop="url" rel="index"><span itemprop="name">技术博客</span></a>
                 </span>
             </span>
 
           
-            <span id="/2022/04/07/%E7%96%AB%E6%83%85%E5%BD%93%E4%B8%8B/" class="post-meta-item leancloud_visitors" data-flag-title="疫情当下" title="阅读次数">
+            <span id="/2022/07/12/%E9%AB%98%E7%BA%A7%E7%AF%87-%E7%AC%AC02%E7%AB%A0-MySQL%E7%9A%84%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95/" class="post-meta-item leancloud_visitors" data-flag-title="高级篇-第02章-MySQL的数据目录" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -218,8 +216,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2022/04/07/%E7%96%AB%E6%83%85%E5%BD%93%E4%B8%8B/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2022/04/07/%E7%96%AB%E6%83%85%E5%BD%93%E4%B8%8B/" itemprop="commentCount"></span>
+    <a title="valine" href="/2022/07/12/%E9%AB%98%E7%BA%A7%E7%AF%87-%E7%AC%AC02%E7%AB%A0-MySQL%E7%9A%84%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/07/12/%E9%AB%98%E7%BA%A7%E7%AF%87-%E7%AC%AC02%E7%AB%A0-MySQL%E7%9A%84%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -234,13 +232,46 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>小学是大同大学的附属小学，每天上下学穿梭在大学校<span id="more"></span>园里，放了学在大同大学里的一些健身器材和小伙伴们一起玩耍，等着爷爷下班接我回家。当时还不懂大学的概念，只是觉得大学校园是一个有生活气息的地方，来往的人群中不仅仅有大学生，还有中学生、小学生，更多的是附近的居民。老爷爷们在街边下着象棋，街角打印店门前一个挂起的笼子里有一只大兔子，远处的宠物狗和小孩子们打成一片……</p>
-<p>转眼间，疫情已经开始了第三年的扫荡，德尔塔，奥密克戎，病毒变异比变脸还快。20级学生被戏称“生于非典，考于肺炎”，很难想象疫情之前的大学生活，那才是求学十二载所期待的大学生活，而不是被困在低低的围墙里的，执行着加快进度的教学任务，进入教室-餐厅-宿舍三点一线的循环🙅‍。</p>
-<p>学生总是很有创造力，也许疫情点燃了同学们的思绪（更多的是资源有限下的物尽其用），街演、广场舞等应接不暇。学校也为了学生丰富封校生活铲除的阻碍，破天荒的打开了操场的大灯，夜晚的操场上随处可见的仿佛获得重生了的大学生，这是疫情之下大学生的夜生活，在那时，疫情下学生生活的场所变成了真正的校园。</p>
-<p>郑强书记：“我们太原理工大学的学生！是全中国最幸福的大学生！”</p>
-<p>校庆倒计时一个月。</p>
-<p>百廿太理，风华正茂。</p>
-<p><img src="/2022/04/07/%E7%96%AB%E6%83%85%E5%BD%93%E4%B8%8B/4f3e39d33ae87ea0c916aa3e58e3fab.jpg"></p>
+        <h2 id="1-MySQL8的主要目录结构"><a href="#1-MySQL8的主要目录结构" class="headerlink" title="1. MySQL8的主要目录结构"></a><strong>1. MySQL8的主要目录结构</strong><span id="more"></span></h2><hr>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -name mysql</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-1-数据库文件的存放路径"><a href="#1-1-数据库文件的存放路径" class="headerlink" title="1.1 数据库文件的存放路径"></a><strong>1.1</strong> <strong>数据库文件的存放路径</strong></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show variables like &#x27;datadir&#x27;; # /var/lib/mysql/</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-相关命令目录"><a href="#1-2-相关命令目录" class="headerlink" title="1.2 相关命令目录"></a><strong>1.2</strong> <strong>相关命令目录</strong></h3><p><strong>相关命令目录：&#x2F;usr&#x2F;bin 和&#x2F;usr&#x2F;sbin。</strong></p>
+<h3 id="1-3-配置文件目录"><a href="#1-3-配置文件目录" class="headerlink" title="1.3 配置文件目录"></a><strong>1.3</strong> <strong>配置文件目录</strong></h3><p><strong>配置文件目录：&#x2F;usr&#x2F;share&#x2F;mysql-8.0（命令及配置文件），&#x2F;etc&#x2F;mysql（如my.cnf）</strong></p>
+<hr>
+<h2 id="2-数据库和文件系统的关系"><a href="#2-数据库和文件系统的关系" class="headerlink" title="2. 数据库和文件系统的关系"></a>2. 数据库和文件系统的关系</h2><hr>
+<h3 id="2-1-表在文件系统中的表示"><a href="#2-1-表在文件系统中的表示" class="headerlink" title="2.1 表在文件系统中的表示"></a><strong>2.1</strong> <strong>表在文件系统中的表示</strong></h3><h4 id="2-3-1-InnoDB存储引擎模式"><a href="#2-3-1-InnoDB存储引擎模式" class="headerlink" title="2.3.1 InnoDB存储引擎模式"></a><strong>2.3.1 InnoDB存储引擎模式</strong></h4><p><strong>1.</strong> <strong>表结构</strong></p>
+<p>为了保存表结构，<code>InnoDB</code>在<code>数据目录</code>下对应的数据库子目录下创建了一个专门用于<code>描述表结构的文件</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">表名.frm</span><br></pre></td></tr></table></figure>
+
+<p><strong>2.</strong> <strong>表中数据和索引</strong></p>
+<p><strong>① 系统表空间（system tablespace）</strong></p>
+<p>默认情况下，InnoDB会在数据目录下创建一个名为<code>ibdata1</code>、大小为<code>12M</code>的<code>自拓展</code>文件，这个文件就是对应的<code>系统表空间</code>在文件系统上的表示。</p>
+<p><strong>② 独立表空间(file-per-table tablespace)</strong> </p>
+<p>在MySQL5.6.6以及之后的版本中，InnoDB并不会默认的把各个表的数据存储到系统表空间中，而是为<code>每一个表建立一个独立表空间</code>，也就是说我们创建了多少个表，就有多少个独立表空间。使用<code>独立表空间</code>来存储表数据的话，会在该表所属数据库对应的子目录下创建一个表示该独立表空间的文件，文件名和表名相同。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">表名.ibd</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>MySQL8.0中不再单独提供<code>表名.frm</code>，而是合并在<code>表名.ibd</code>文件中。</p>
+</blockquote>
+<p><strong>③ 系统表空间与独立表空间的设置</strong></p>
+<p>我们可以自己指定使用<code>系统表空间</code>还是<code>独立表空间</code>来存储数据，这个功能由启动参数<code>innodb_file_per_table</code>控制</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[server]</span> </span><br><span class="line"><span class="attr">innodb_file_per_table</span>=<span class="number">0</span> <span class="comment"># 0：代表使用系统表空间； 1：代表使用独立表空间</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>④ 其他类型的表空间</strong></p>
+<p>随着MySQL的发展，除了上述两种老牌表空间之外，现在还新提出了一些不同类型的表空间，比如通用表空间（general tablespace）、临时表空间（temporary tablespace）等。</p>
+<h4 id="2-3-2-MyISAM存储引擎模式"><a href="#2-3-2-MyISAM存储引擎模式" class="headerlink" title="2.3.2 MyISAM存储引擎模式"></a><strong>2.3.2 MyISAM存储引擎模式</strong></h4><p><strong>1.</strong> <strong>表结构</strong></p>
+<p>在存储表结构方面， MyISAM 和 InnoDB 一样，也是在<code>数据目录</code>下对应的数据库子目录下创建了一个专门用于描述表结构的文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">表名.frm</span><br></pre></td></tr></table></figure>
+
+<p><strong>2.</strong> <strong>表中数据和索引</strong></p>
+<p>在MyISAM中的索引全部都是<code>二级索引</code>，该存储引擎的<code>数据和索引是分开存放</code>的。所以在文件系统中也是使用不同的文件来存储数据文件和索引文件，同时表数据都存放在对应的数据库子目录下。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">test.frm 存储表结构 #MySQL8.0 改为了 b.xxx.sdi</span><br><span class="line">test.MYD 存储数据 (MYData) </span><br><span class="line">test.MYI 存储索引 (MYIndex</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>笔记创建者：王圳</p>
+<p>参考讲师：尚硅谷 宋红康（江湖人称：康师傅）</p>
 
       <div>
         
@@ -259,7 +290,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/COVID-19/" rel="tag"># COVID_19</a>
+              <a href="/tags/MySQL%E9%AB%98%E7%BA%A7%E7%AF%87/" rel="tag"># MySQL高级篇</a>
           </div>
 
         
@@ -268,13 +299,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/04/07/%E7%AC%AC02%E7%AB%A0-MySQL%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" rel="prev" title="第02章_MySQL环境搭建">
-      <i class="fa fa-chevron-left"></i> 第02章_MySQL环境搭建
+    <a href="/2022/06/30/%E9%AB%98%E7%BA%A7%E7%AF%87-%E7%AC%AC01%E7%AB%A0-Linux%E4%B8%8BMySQL%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/" rel="prev" title="高级篇_第01章_Linux下MySQL的安装与使用">
+      <i class="fa fa-chevron-left"></i> 高级篇_第01章_Linux下MySQL的安装与使用
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/04/07/%E7%AC%AC03%E7%AB%A0-%E5%9F%BA%E6%9C%AC%E7%9A%84SELECT%E8%AF%AD%E5%8F%A5/" rel="next" title="第03章_基本的SELECT语句">
-      第03章_基本的SELECT语句 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -334,6 +362,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-MySQL8%E7%9A%84%E4%B8%BB%E8%A6%81%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-text">1. MySQL8的主要目录结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E6%95%B0%E6%8D%AE%E5%BA%93%E6%96%87%E4%BB%B6%E7%9A%84%E5%AD%98%E6%94%BE%E8%B7%AF%E5%BE%84"><span class="nav-text">1.1 数据库文件的存放路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4%E7%9B%AE%E5%BD%95"><span class="nav-text">1.2 相关命令目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95"><span class="nav-text">1.3 配置文件目录</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%95%B0%E6%8D%AE%E5%BA%93%E5%92%8C%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-text">2. 数据库和文件系统的关系</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E8%A1%A8%E5%9C%A8%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84%E8%A1%A8%E7%A4%BA"><span class="nav-text">2.1 表在文件系统中的表示</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-InnoDB%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E%E6%A8%A1%E5%BC%8F"><span class="nav-text">2.3.1 InnoDB存储引擎模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-MyISAM%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E%E6%A8%A1%E5%BC%8F"><span class="nav-text">2.3.2 MyISAM存储引擎模式</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
