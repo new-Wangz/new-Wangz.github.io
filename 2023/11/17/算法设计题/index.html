@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="单链表">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法设计题">
+<meta property="og:url" content="http://example.com/2023/11/17/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E9%A2%98/index.html">
+<meta property="og:site_name" content="W Z B L O G">
+<meta property="og:description" content="单链表">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-11-17T15:12:28.000Z">
+<meta property="article:modified_time" content="2023-11-17T15:14:54.954Z">
+<meta property="article:author" content="Wang Zhen">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2023/11/17/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E9%A2%98/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>算法设计题 | W Z B L O G</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">W Z B L O G</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">⚽</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/11/17/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png#/images/avatar.gif">
+      <meta itemprop="name" content="Wang Zhen">
+      <meta itemprop="description" content="请出示行程码、健康码，配戴好口罩浏览本站😜">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="W Z B L O G">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          算法设计题
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-11-17 23:12:28 / 修改时间：23:14:54" itemprop="dateCreated datePublished" datetime="2023-11-17T23:12:28+08:00">2023-11-17</time>
+            </span>
+
+          
+            <span id="/2023/11/17/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E9%A2%98/" class="post-meta-item leancloud_visitors" data-flag-title="算法设计题" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2023/11/17/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E9%A2%98/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/11/17/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E9%A2%98/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>单链表<span id="more"></span></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">LNode</span>&#123;</span></span><br><span class="line">    ElemType data;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">LNode</span> *<span class="title">next</span>;</span></span><br><span class="line">&#125;LNode, *LinkList;</span><br><span class="line"><span class="comment">//头插法建表</span></span><br><span class="line">LinkList <span class="title function_">List_HeadInsert</span><span class="params">(LinkList &amp;L)</span>&#123;</span><br><span class="line">    LNode *s; <span class="type">int</span> x;</span><br><span class="line">    L = (LinkList)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(LNode));	<span class="comment">//创建头结点</span></span><br><span class="line">    L-&gt;next = <span class="literal">NULL</span>;		<span class="comment">//初始为空链表</span></span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;x);	<span class="comment">//输入结点的值</span></span><br><span class="line">    <span class="keyword">while</span>(x!=<span class="number">9999</span>)&#123;		<span class="comment">//输入9999表示结束</span></span><br><span class="line">        s = (LNode*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(LNode));		<span class="comment">//创建新结点</span></span><br><span class="line">        s-&gt;data = x;</span><br><span class="line">        s-&gt;next = L-&gt;next;</span><br><span class="line">        L-&gt;next = s;	<span class="comment">//将新结点插入表中，L为头指针</span></span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;x);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> L;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//按序号查找结点值</span></span><br><span class="line">LNode *<span class="title function_">GetElem</span><span class="params">(LinkList L, <span class="type">int</span> i)</span>&#123;</span><br><span class="line">    <span class="type">int</span> j = <span class="number">1</span>;		<span class="comment">//计数，初始为1</span></span><br><span class="line">    LNode *p = L-&gt;next;		<span class="comment">//第一个结点指针赋给p</span></span><br><span class="line">    <span class="keyword">if</span>(i==<span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> L;		<span class="comment">//若i等于0，则返回头结点</span></span><br><span class="line">    <span class="keyword">if</span>(i&lt;<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;	<span class="comment">//若i无效，则返回NULL</span></span><br><span class="line">    <span class="keyword">while</span>(p &amp;&amp; j&lt;i)&#123;	<span class="comment">//从第一个结点开始找，查找第i个结点</span></span><br><span class="line">        p = p-&gt;next;</span><br><span class="line">        j++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> p;		<span class="comment">//返回第i个结点的指针，若i大于表长，则返回NULL</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//按值查找表结点</span></span><br><span class="line">LNode *<span class="title function_">LocateElem</span><span class="params">(LinkList L, ElemType e)</span>&#123;</span><br><span class="line">    LNode *p = L-&gt;next;</span><br><span class="line">    <span class="keyword">while</span>(p!=<span class="literal">NULL</span> &amp;&amp; p-&gt;data!=e)</span><br><span class="line">        p = p-&gt;next;</span><br><span class="line">    <span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>栈</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">StackNode</span> &#123;</span></span><br><span class="line">    ElemType data;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">StackNode</span> *<span class="title">next</span>;</span></span><br><span class="line">&#125;StackType;</span><br><span class="line"><span class="comment">//初始化</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">InitStack</span><span class="params">(StackType **top)</span>&#123;</span><br><span class="line">    *top = (StackType *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(StackType));</span><br><span class="line">    (*top)-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//入栈操作</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">pushStack</span><span class="params">(StackType *top, ElemType x)</span>&#123;</span><br><span class="line">    StackType *p;</span><br><span class="line">    p = (StackType *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(StackType));	<span class="comment">//申请结点</span></span><br><span class="line">    p-&gt;data = x;</span><br><span class="line">    p-&gt;next = top-&gt;next;</span><br><span class="line">    top-&gt;next;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//出栈操作</span></span><br><span class="line">ElemType <span class="title function_">popStack</span><span class="params">(StackType *top)</span>&#123;</span><br><span class="line">    StackType *p;</span><br><span class="line">    ElemType x;</span><br><span class="line">    <span class="keyword">if</span>(top-&gt;next == <span class="literal">NULL</span>)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;空栈！&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        p = top-&gt;next;</span><br><span class="line">        top-next = p-&gt;next;</span><br><span class="line">        x = p-&gt;data;</span><br><span class="line">        <span class="built_in">free</span>(p);</span><br><span class="line">        <span class="keyword">return</span> x;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//取栈顶数据元素</span></span><br><span class="line">ElemType <span class="title function_">GetTop</span><span class="params">(StackType *top)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(top-&gt;next = <span class="literal">NULL</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (top-&gt;next-&gt;data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>二叉树</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">BiTNode</span>&#123;</span></span><br><span class="line">    ElemType data;		<span class="comment">//数据域</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">BiTNode</span> *<span class="title">lchild</span>, *<span class="title">rchild</span>;</span>	<span class="comment">//左，右孩子指针</span></span><br><span class="line">&#125;BiTNode, *BiTree;</span><br><span class="line"><span class="comment">//先序遍历</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">PreOrder</span><span class="params">(BiTree T)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(T!=<span class="literal">NULL</span>)&#123;</span><br><span class="line">        visit(T);		<span class="comment">//访问根结点</span></span><br><span class="line">        PreOrder(T-&gt;lchild);	<span class="comment">//递归遍历左子树</span></span><br><span class="line">        PreOrder(T-&gt;rchild);	<span class="comment">//递归遍历右子树</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//中序遍历 InOrder</span></span><br><span class="line"><span class="comment">//后序遍历 PostOrder</span></span><br></pre></td></tr></table></figure>
+
+<p>快速排序</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">QuickSort</span><span class="params">(ElemType A[], <span class="type">int</span> low, <span class="type">int</span> high)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(low&lt;high)&#123;		<span class="comment">//递归跳出的条件</span></span><br><span class="line">        <span class="type">int</span> pivotpos = Partition(A, low, high);		<span class="comment">//划分</span></span><br><span class="line">        QuickSort(A, low, pivotpos<span class="number">-1</span>);		<span class="comment">//左子表递归</span></span><br><span class="line">        QuickSort(A, pivotpos+<span class="number">1</span>, high);		<span class="comment">//右子表递归</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//划分函数</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">Partition</span><span class="params">(ElemType A[], <span class="type">int</span> low, <span class="type">int</span> high)</span>&#123;		<span class="comment">//一趟划分</span></span><br><span class="line">    ElemType pivot = A[low];	<span class="comment">//将当前表中第一个元素设为枢轴，对表进行划分</span></span><br><span class="line">    <span class="keyword">while</span>(low&lt;high)&#123;	<span class="comment">//循环跳出条件</span></span><br><span class="line">        <span class="keyword">while</span>(low&lt;high &amp;&amp; A[high]&gt;=pivot) --high;</span><br><span class="line">        A[low] = A[high];		<span class="comment">//将比枢轴小的元素移动到左端</span></span><br><span class="line">        <span class="keyword">while</span>(low&lt;high &amp;&amp; A[low]&lt;=pivot) ++low;</span><br><span class="line">        A[high] = A[low];		<span class="comment">//将比枢轴大的元素移动到右端</span></span><br><span class="line">    &#125;</span><br><span class="line">    A[low] = pivot;		<span class="comment">//枢轴元素存放到最终位置</span></span><br><span class="line">    <span class="keyword">return</span> low;		<span class="comment">//返回存放枢轴元素的最终位置</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>折半查找</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">Binary_Search</span><span class="params">(SeqList L, ElemType key)</span>&#123;</span><br><span class="line">    <span class="type">int</span> low = <span class="number">0</span>, high = L.TableLen<span class="number">-1</span>, mid;</span><br><span class="line">    <span class="keyword">while</span>(low&lt;=high)&#123;</span><br><span class="line">        mid = (low+high)/<span class="number">2</span>;		<span class="comment">//取中间位置</span></span><br><span class="line">        <span class="keyword">if</span>(L.elem[mid]==key)</span><br><span class="line">            <span class="keyword">return</span> mid;		<span class="comment">//查找成功则返回所在位置</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(L.elem[mid]&gt;key)</span><br><span class="line">            high = mid<span class="number">-1</span>;		<span class="comment">//从前半部分继续查找</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            low = mid+<span class="number">1</span>;		<span class="comment">//从后半部分继续查找</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;		<span class="comment">//查找失败，返回-1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      <div>
+        
+          <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本 文 结 束 <i class="fa fa-paw"></i> 感 谢 您 的 阅 读-------------</div>
+    
+</div>
+        
+      </div>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/11/15/%E8%8B%B1%E4%BA%8C%E5%A4%A7%E4%BD%9C%E6%96%87/" rel="prev" title="英二大作文">
+      <i class="fa fa-chevron-left"></i> 英二大作文
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Wang Zhen"
+      src="/uploads/avatar.png#/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Wang Zhen</p>
+  <div class="site-description" itemprop="description">请出示行程码、健康码，配戴好口罩浏览本站😜</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/new-Wangz" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;new-Wangz" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mrwangz@qq.com" title="E-Mail → mailto:mrwangz@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/5514641355" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;5514641355" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-cat"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wang Zhen</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : true,
+      notify     : true,
+      appId      : 'XnOon4MAqmL0Li6MykTmnsGH-gzGzoHsz',
+      appKey     : 'GumdfwNMNMtwCdHQO6IjvtuO',
+      placeholder: "Would you like to leave a message?",
+      avatar     : 'retor',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
